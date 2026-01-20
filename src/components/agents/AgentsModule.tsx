@@ -40,7 +40,7 @@ export const AgentsModule: React.FC = () => {
   }, [fetchAgents, checkConnection, initializeMockData]);
 
   useEffect(() => {
-    if (dataLoaded && !loading) {
+    if (dataLoaded && !loading && agents) {
       const onboardingCompleted = localStorage.getItem(ONBOARDING_KEY) === 'true';
       const hasNoAgents = agents.length === 0;
 
@@ -48,7 +48,7 @@ export const AgentsModule: React.FC = () => {
         setShowOnboarding(true);
       }
     }
-  }, [dataLoaded, loading, agents.length]);
+  }, [dataLoaded, loading, agents]);
 
   const handleCompleteOnboarding = () => {
     setShowOnboarding(false);

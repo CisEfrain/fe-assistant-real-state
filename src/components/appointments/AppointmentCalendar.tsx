@@ -28,7 +28,7 @@ export const AppointmentCalendar: React.FC<AppointmentCalendarProps> = ({
   }, [currentMonth]);
 
   const appointmentsByDate = useMemo(() => {
-    return appointments.reduce((acc, appointment) => {
+    return (appointments || []).reduce((acc, appointment) => {
       if (appointment.appointment?.date) {
         const date = format(new Date(appointment.appointment.date), 'yyyy-MM-dd');
         if (!acc[date]) acc[date] = [];

@@ -11,21 +11,22 @@ export const AppointmentMetrics: React.FC<AppointmentMetricsProps> = ({
   appointments,
   totalInteractions
 }) => {
-  const visitAppointments = appointments.filter(a => a.appointment?.type === 'VISIT');
-  const phoneAppointments = appointments.filter(a => a.appointment?.type === 'PHONE_CALL');
-  
-  const sellAppointments = appointments.filter(a => a.operation_type === 'SELL');
-  const rentAppointments = appointments.filter(a => a.operation_type === 'RENT');
-  
-  const propertyLeadAppointments = appointments.filter(a => a.lead_type === 'PROPERTY_LEAD');
-  const searchLeadAppointments = appointments.filter(a => a.lead_type === 'SEARCH_LEAD');
-  
-  const totalValue = appointments
+  const safeAppointments = appointments || [];
+  const visitAppointments = safeAppointments.filter(a => a.appointment?.type === 'VISIT');
+  const phoneAppointments = safeAppointments.filter(a => a.appointment?.type === 'PHONE_CALL');
+
+  const sellAppointments = safeAppointments.filter(a => a.operation_type === 'SELL');
+  const rentAppointments = safeAppointments.filter(a => a.operation_type === 'RENT');
+
+  const propertyLeadAppointments = safeAppointments.filter(a => a.lead_type === 'PROPERTY_LEAD');
+  const searchLeadAppointments = safeAppointments.filter(a => a.lead_type === 'SEARCH_LEAD');
+
+  const totalValue = safeAppointments
     .filter(a => a.original_property?.price?.amount)
     .reduce((sum, a) => sum + (a.original_property?.price?.amount || 0), 0);
 
   const avgTimeToAppointment = 2.3; // Simulado - días promedio
-  const conversionRate = (appointments.length / totalInteractions) * 100;
+  const conversionRate = totalInteractions > 0 ? (safeAppointments.length / totalInteractions) * 100 : 0;
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('es-MX', {
@@ -45,7 +46,7 @@ export const AppointmentMetrics: React.FC<AppointmentMetricsProps> = ({
             <Calendar className="h-6 w-6 text-white" />
           </div>
           <div>
-            <div className="text-2xl font-bold text-gray-900">{appointments.length.toLocaleString()}</div>
+            <div className="text-2xl font-bold text-gray-900">{safeAppointments.length.toLocaleString()}</div>
             <div className="text-sm text-gray-600">Total de Citas</div>
             <div className="text-xs text-purple-600 font-medium">
               {conversionRate.toFixed(1)}% de conversión
@@ -71,7 +72,7 @@ export const AppointmentMetrics: React.FC<AppointmentMetricsProps> = ({
                 <div className="text-right">
                   <span className="font-bold text-gray-900">{visitAppointments.length}</span>
                   <span className="text-xs text-gray-500 ml-1">
-                    ({((visitAppointments.length / appointments.length) * 100).toFixed(0)}%)
+                    ({safeAppointments.length > 0 ? ((visitAppointments.length / safeAppointments.length) * 100).toFixed(0) : 0}%)
                   </span>
                 </div>
               </div>
@@ -83,7 +84,7 @@ export const AppointmentMetrics: React.FC<AppointmentMetricsProps> = ({
                 <div className="text-right">
                   <span className="font-bold text-gray-900">{phoneAppointments.length}</span>
                   <span className="text-xs text-gray-500 ml-1">
-                    ({((phoneAppointments.length / appointments.length) * 100).toFixed(0)}%)
+                    ({safeAppointments.length > 0 ? ((phoneAppointments.length / safeAppointments.length) * 100).toFixed(0) : 0}%)
                   </span>
                 </div>
               </div>
@@ -104,7 +105,7 @@ export const AppointmentMetrics: React.FC<AppointmentMetricsProps> = ({
             </div>
             <div className="text-sm text-gray-600">Valor Total de Citas</div>
             <div className="text-xs text-green-600 font-medium">
-              Promedio: {formatCurrency(totalValue / (appointments.length || 1))}
+              Promedio: {formatCurrency(totalValue / (safeAppointments.length || 1))}
             </div>
           </div>
         </div>
@@ -124,7 +125,7 @@ export const AppointmentMetrics: React.FC<AppointmentMetricsProps> = ({
                 <div className="text-right">
                   <span className="font-bold text-orange-600">{sellAppointments.length}</span>
                   <span className="text-xs text-gray-500 ml-1">
-                    ({((sellAppointments.length / appointments.length) * 100).toFixed(0)}%)
+                    ({safeAppointments.length > 0 ? ((sellAppointments.length / safeAppointments.length) * 100).toFixed(0) : 0}%)
                   </span>
                 </div>
               </div>
@@ -133,7 +134,7 @@ export const AppointmentMetrics: React.FC<AppointmentMetricsProps> = ({
                 <div className="text-right">
                   <span className="font-bold text-indigo-600">{rentAppointments.length}</span>
                   <span className="text-xs text-gray-500 ml-1">
-                    ({((rentAppointments.length / appointments.length) * 100).toFixed(0)}%)
+                    ({safeAppointments.length > 0 ? ((rentAppointments.length / safeAppointments.length) * 100).toFixed(0) : 0}%)
                   </span>
                 </div>
               </div>
@@ -156,7 +157,7 @@ export const AppointmentMetrics: React.FC<AppointmentMetricsProps> = ({
                 <div className="text-right">
                   <span className="font-bold text-blue-600">{propertyLeadAppointments.length}</span>
                   <span className="text-xs text-gray-500 ml-1">
-                    ({((propertyLeadAppointments.length / appointments.length) * 100).toFixed(0)}%)
+                    ({safeAppointments.length > 0 ? ((propertyLeadAppointments.length / safeAppointments.length) * 100).toFixed(0) : 0}%)
                   </span>
                 </div>
               </div>
@@ -165,7 +166,7 @@ export const AppointmentMetrics: React.FC<AppointmentMetricsProps> = ({
                 <div className="text-right">
                   <span className="font-bold text-green-600">{searchLeadAppointments.length}</span>
                   <span className="text-xs text-gray-500 ml-1">
-                    ({((searchLeadAppointments.length / appointments.length) * 100).toFixed(0)}%)
+                    ({safeAppointments.length > 0 ? ((searchLeadAppointments.length / safeAppointments.length) * 100).toFixed(0) : 0}%)
                   </span>
                 </div>
               </div>
