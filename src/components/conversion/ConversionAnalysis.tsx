@@ -43,7 +43,7 @@ export const ConversionAnalysis: React.FC = () => {
 
   // Filtrar solo PROPERTY_LEAD
   const propertyLeads = useMemo(() => {
-    return interactions.filter(interaction => {
+    return (interactions || []).filter(interaction => {
       if (interaction.lead_type !== 'PROPERTY_LEAD') return false;
       if (!interaction.original_property) return false;
 
