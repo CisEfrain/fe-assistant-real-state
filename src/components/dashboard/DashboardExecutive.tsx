@@ -146,11 +146,15 @@ export const DashboardExecutive: React.FC = () => {
   }, [dateFilters]);
   // Calcular top de fuentes
   const topSources = React.useMemo(() => {
+    if (!interactions || !Array.isArray(interactions)) {
+      return [];
+    }
+
     const sourceCount = interactions.reduce((acc, interaction) => {
       acc[interaction.source] = (acc[interaction.source] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
-    
+
     return Object.entries(sourceCount)
       .sort(([,a], [,b]) => b - a)
       .slice(0, 5)
@@ -158,12 +162,12 @@ export const DashboardExecutive: React.FC = () => {
   }, [interactions]);
 
   // Calcular satisfacción positiva corregida
-  const csatResponses = interactions.filter(interaction => interaction.quality.show_csat && interaction.quality.csat);
+  const csatResponses = (interactions || []).filter(interaction => interaction.quality.show_csat && interaction.quality.csat);
   const positiveCsat = csatResponses.filter(interaction => {
     const csat = interaction.quality.csat;
     // Manejar tanto valores numéricos como texto
     if (typeof csat === 'string') {
-      return csat === 'Satisfecho' || csat === 'Muy satisfecho' || 
+      return csat === 'Satisfecho' || csat === 'Muy satisfecho' ||
              csat === 'SATISFIED' || csat === 'VERY_SATISFIED' ||
              csat === '4' || csat === '5';
     }
@@ -175,23 +179,24 @@ export const DashboardExecutive: React.FC = () => {
   const satisfactionRate = csatResponses.length > 0 ? (positiveCsat.length / csatResponses.length) * 100 : 0;
 
   // Calcular interacciones fuera de horario
-  const offHoursInteractions = interactions.filter(interaction => {
+  const offHoursInteractions = (interactions || []).filter(interaction => {
     const date = new Date(interaction.created_at);
     const hour = date.getHours();
     const dayOfWeek = date.getDay(); // 0 = Domingo, 6 = Sábado
-    
+
     // Domingo
     if (dayOfWeek === 0) return true;
-    
+
     // Sábado: fuera de 9:00-14:00
     if (dayOfWeek === 6) {
       return hour < 9 || hour >= 14;
     }
-    
+
     // Lunes a Viernes: fuera de 9:00-18:00
     return hour < 9 || hour >= 18;
   });
-  const offHoursResponseRate = interactions.length > 0 ? (offHoursInteractions.length / interactions.length) * 100 : 0;
+  const safeInteractionsLength = (interactions || []).length;
+  const offHoursResponseRate = safeInteractionsLength > 0 ? (offHoursInteractions.length / safeInteractionsLength) * 100 : 0;
 
   return (
     <div className="space-y-8">
@@ -470,7 +475,7 @@ export const DashboardExecutive: React.FC = () => {
                     <div>
                       <div className="font-medium text-gray-900">{item.source}</div>
                       <div className="text-sm text-gray-500">
-                        {((item.count / interactions.length) * 100).toFixed(1)}% del total
+                        {safeInteractionsLength > 0 ? ((item.count / safeInteractionsLength) * 100).toFixed(1) : '0'}% del total
                       </div>
                     </div>
                   </div>
