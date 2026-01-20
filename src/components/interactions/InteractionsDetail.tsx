@@ -164,15 +164,14 @@ export const InteractionsDetail: React.FC = () => {
       {/* Distribución por Tipo de Lead */}
       <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Distribución por Tipo de Lead</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[
             { type: 'PROPERTY_LEAD', label: 'Lead de Propiedad' },
-            { type: 'SEARCH_LEAD', label: 'Lead de Búsqueda' },
-            { type: 'LOCATION_LEAD', label: 'Bin Lead' }
+            { type: 'SEARCH_LEAD', label: 'Lead de Búsqueda' }
           ].map(({ type, label }) => {
             const count = interactions.filter(interaction => interaction.lead_type === type).length;
             const percentage = ((count / totalInteractions) * 100).toFixed(1);
-            
+
             return (
               <div key={type} className="text-center p-4 bg-gray-50 rounded-lg">
                 <div className="text-2xl font-bold text-gray-900">{count.toLocaleString()}</div>

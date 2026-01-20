@@ -17,14 +17,12 @@ export const ComplaintAnalysis: React.FC<ComplaintAnalysisProps> = ({ interactio
   const complaintsByLeadType = {
     'Lead de propiedad': interactionsWithComplaints.filter(interaction => interaction.lead_type === 'PROPERTY_LEAD').length,
     'Lead de búsqueda': interactionsWithComplaints.filter(interaction => interaction.lead_type === 'SEARCH_LEAD').length,
-    'BIN Lead': interactionsWithComplaints.filter(interaction => interaction.lead_type === 'LOCATION_LEAD').length,
   };
 
   const getLeadTypeLabel = (leadType: string) => {
     switch (leadType) {
       case 'PROPERTY_LEAD': return 'Lead de propiedad';
       case 'SEARCH_LEAD': return 'Lead de búsqueda';
-      case 'LOCATION_LEAD': return 'BIN Lead';
       default: return leadType;
     }
   };

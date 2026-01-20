@@ -81,7 +81,6 @@ export const InteractionDetailModal: React.FC<InteractionDetailModalProps> = ({ 
     switch (leadType) {
       case 'PROPERTY_LEAD': return 'bg-blue-100 text-blue-800 border-blue-200';
       case 'SEARCH_LEAD': return 'bg-green-100 text-green-800 border-green-200';
-      case 'LOCATION_LEAD': return 'bg-purple-100 text-purple-800 border-purple-200';
       default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
@@ -90,7 +89,6 @@ export const InteractionDetailModal: React.FC<InteractionDetailModalProps> = ({ 
     switch (leadType) {
       case 'PROPERTY_LEAD': return 'Lead de Propiedad';
       case 'SEARCH_LEAD': return 'Lead de Búsqueda';
-      case 'LOCATION_LEAD': return 'Bin Lead';
       default: return leadType;
     }
   };
@@ -163,8 +161,6 @@ export const InteractionDetailModal: React.FC<InteractionDetailModalProps> = ({ 
     switch (channel) {
       case 'whatsapp':
         return <MessageCircle className="h-5 w-5 text-green-600" />;
-      case 'call':
-        return <Phone className="h-5 w-5 text-blue-600" />;
       case 'webchat':
         return <MessageSquare className="h-5 w-5 text-purple-600" />;
       case 'widget_testing':
@@ -508,10 +504,8 @@ export const InteractionDetailModal: React.FC<InteractionDetailModalProps> = ({ 
                 </div>
                 <div className="text-sm">
                   <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                    interaction.channel === 'whatsapp' 
-                      ? 'bg-green-100 text-green-800' 
-                      : interaction.channel === 'call'
-                      ? 'bg-blue-100 text-blue-800'
+                    interaction.channel === 'whatsapp'
+                      ? 'bg-green-100 text-green-800'
                       : interaction.channel === 'webchat'
                       ? 'bg-purple-100 text-purple-800'
                       : interaction.channel === 'widget_testing'
@@ -519,7 +513,6 @@ export const InteractionDetailModal: React.FC<InteractionDetailModalProps> = ({ 
                       : 'bg-gray-100 text-gray-800'
                   }`}>
                     {interaction.channel === 'whatsapp' && 'WhatsApp'}
-                    {interaction.channel === 'call' && 'Llamada Telefónica'}
                     {interaction.channel === 'webchat' && 'Web Chat'}
                     {interaction.channel === 'widget_testing' && 'Widget Testing'}
                   </span>

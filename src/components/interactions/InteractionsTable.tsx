@@ -154,7 +154,6 @@ export const InteractionsTable: React.FC<InteractionsTableProps> = ({ interactio
     switch (leadType) {
       case 'PROPERTY_LEAD': return 'Lead de propiedad';
       case 'SEARCH_LEAD': return 'Lead de búsqueda';
-      case 'LOCATION_LEAD': return 'BIN Lead';
       default: return leadType;
     }
   };
@@ -233,7 +232,6 @@ export const InteractionsTable: React.FC<InteractionsTableProps> = ({ interactio
             >
               <option value="">Todos los canales</option>
               <option value="whatsapp">WhatsApp</option>
-              <option value="call">Llamada</option>
               <option value="webchat">Web Chat</option>
               <option value="widget_testing">Widget Testing</option>
             </select>
@@ -249,7 +247,6 @@ export const InteractionsTable: React.FC<InteractionsTableProps> = ({ interactio
               <option value="">Todos los tipos</option>
               <option value="PROPERTY_LEAD">Lead de Propiedad</option>
               <option value="SEARCH_LEAD">Lead de Búsqueda</option>
-              <option value="LOCATION_LEAD">Bin Lead</option>
             </select>
 
             <select

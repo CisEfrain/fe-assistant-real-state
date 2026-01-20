@@ -107,9 +107,6 @@ export const AgentSummary: React.FC = () => {
                   {currentAgent.channel === 'whatsapp' && (
                     <MessageCircle className="h-4 w-4 text-green-600" />
                   )}
-                  {currentAgent.channel === 'call' && (
-                    <Phone className="h-4 w-4 text-blue-600" />
-                  )}
                   {currentAgent.channel === 'webchat' && (
                     <MessageSquare className="h-4 w-4 text-purple-600" />
                   )}
@@ -118,7 +115,6 @@ export const AgentSummary: React.FC = () => {
                   )}
                   <span className="text-sm font-medium text-gray-900">
                     {currentAgent.channel === 'whatsapp' && 'WhatsApp'}
-                    {currentAgent.channel === 'call' && 'Llamadas'}
                     {currentAgent.channel === 'webchat' && 'Web Chat'}
                     {currentAgent.channel === 'widget_testing' && 'Widget Testing'}
                   </span>

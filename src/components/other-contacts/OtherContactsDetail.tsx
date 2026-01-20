@@ -26,7 +26,7 @@ export const OtherContactsDetail: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   
   // Local filters
-  const [channelFilter, setChannelFilter] = useState<'whatsapp' | 'call' | 'webchat' | 'widget_testing' | ''>('');
+  const [channelFilter, setChannelFilter] = useState<'whatsapp' | 'webchat' | 'widget_testing' | ''>('');
   const [complaintFilter, setComplaintFilter] = useState<boolean | ''>('');
   const [tagsFilter, setTagsFilter] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState('');
@@ -123,7 +123,6 @@ export const OtherContactsDetail: React.FC = () => {
   // Calculate statistics
   const contactsWithComplaint = otherContacts.filter(c => c.has_complaint).length;
   const whatsappContacts = otherContacts.filter(c => c.channel === 'whatsapp').length;
-  const callContacts = otherContacts.filter(c => c.channel === 'call').length;
   
   // Calculate average session duration
   const avgDuration = otherContacts.reduce((sum, contact) => {
@@ -200,12 +199,11 @@ export const OtherContactsDetail: React.FC = () => {
             <label className="block text-sm font-medium text-gray-700 mb-2">Canal</label>
             <select
               value={channelFilter}
-              onChange={(e) => setChannelFilter(e.target.value as 'whatsapp' | 'call' | 'webchat' | 'widget_testing' | '')}
+              onChange={(e) => setChannelFilter(e.target.value as 'whatsapp' | 'webchat' | 'widget_testing' | '')}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent"
             >
               <option value="">Todos los canales</option>
               <option value="whatsapp">WhatsApp</option>
-              <option value="call">Llamada</option>
               <option value="webchat">Web Chat</option>
               <option value="widget_testing">Widget Testing</option>
             </select>
@@ -314,20 +312,6 @@ export const OtherContactsDetail: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
-          <div className="flex items-center space-x-3">
-            <div className="p-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg">
-              <Phone className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-gray-900">{callContacts.toLocaleString()}</div>
-              <div className="text-sm text-gray-600">Llamadas</div>
-              <div className="text-xs text-blue-600 font-medium">
-                {otherContacts.length > 0 ? ((callContacts / otherContacts.length) * 100).toFixed(1) : 0}% del total
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Additional Stats */}

@@ -19,7 +19,6 @@ export const HumanEscalation: React.FC<HumanEscalationProps> = ({ interactions }
   const escalationByLeadType = {
     'Lead de propiedad': humanRequests.filter(interaction => interaction.lead_type === 'PROPERTY_LEAD').length,
     'Lead de búsqueda': humanRequests.filter(interaction => interaction.lead_type === 'SEARCH_LEAD').length,
-    'BIN Lead': humanRequests.filter(interaction => interaction.lead_type === 'LOCATION_LEAD').length,
   };
 
   // Tasa de respuesta de agentes

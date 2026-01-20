@@ -40,7 +40,6 @@ export const QualityFilters: React.FC<QualityFiltersProps> = ({ filters, onFilte
           >
             <option value="">Todos los canales</option>
             <option value="whatsapp">WhatsApp</option>
-            <option value="call">Llamada</option>
             <option value="webchat">Web Chat</option>
             <option value="widget_testing">Widget Testing</option>
           </select>
@@ -81,7 +80,6 @@ export const QualityFilters: React.FC<QualityFiltersProps> = ({ filters, onFilte
             <option value="">Todos</option>
             <option value="PROPERTY_LEAD">Lead de propiedad</option>
             <option value="SEARCH_LEAD">Lead de búsqueda</option>
-            <option value="LOCATION_LEAD">BIN Lead</option>
           </select>
         </div>
 

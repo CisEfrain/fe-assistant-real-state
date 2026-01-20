@@ -86,20 +86,12 @@ export const OtherContactsTable: React.FC<OtherContactsTableProps> = ({
     return text.substring(0, maxLength) + '...';
   };
 
-  const getChannelBadge = (channel?: 'whatsapp' | 'call' | 'webchat' | 'widget_testing') => {
+  const getChannelBadge = (channel?: 'whatsapp' | 'webchat' | 'widget_testing') => {
     if (channel === 'whatsapp') {
       return (
         <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
           <MessageCircle className="h-3 w-3 mr-1" />
           WhatsApp
-        </span>
-      );
-    }
-    if (channel === 'call') {
-      return (
-        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-          <Phone className="h-3 w-3 mr-1" />
-          Llamada
         </span>
       );
     }

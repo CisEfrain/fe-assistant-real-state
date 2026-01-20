@@ -42,7 +42,6 @@ export const AppointmentList: React.FC<AppointmentListProps> = ({
     switch (leadType) {
       case 'PROPERTY_LEAD': return 'bg-blue-100 text-blue-800';
       case 'SEARCH_LEAD': return 'bg-green-100 text-green-800';
-      case 'LOCATION_LEAD': return 'bg-purple-100 text-purple-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -51,7 +50,6 @@ export const AppointmentList: React.FC<AppointmentListProps> = ({
     switch (leadType) {
       case 'PROPERTY_LEAD': return 'Lead de propiedad';
       case 'SEARCH_LEAD': return 'Lead de búsqueda';
-      case 'LOCATION_LEAD': return 'BIN Lead';
       default: return leadType;
     }
   };
