@@ -388,6 +388,44 @@ export const AgentTesting: React.FC = () => {
             {/* Messages Area */}
             <div className="h-96 overflow-y-auto p-6 bg-gray-50">
               <div className="space-y-4">
+                {currentSession.messages.length === 0 && isSessionActive && (
+                  <div className="text-center py-8">
+                    <div className="mb-4">
+                      <Bot className="h-12 w-12 text-purple-400 mx-auto mb-3" />
+                      <h4 className="text-lg font-medium text-gray-900 mb-2">¡Prueba tu asistente!</h4>
+                      <p className="text-sm text-gray-600 mb-6">Haz clic en alguno de estos casos de uso o escribe tu propio mensaje</p>
+                    </div>
+                    <div className="grid grid-cols-1 gap-3 max-w-md mx-auto">
+                      <button
+                        onClick={() => {
+                          setInputMessage('Busco casa en renta en Polanco');
+                          setTimeout(() => handleSendMessage(), 100);
+                        }}
+                        className="px-4 py-3 bg-white border-2 border-purple-200 rounded-lg hover:border-purple-400 hover:bg-purple-50 transition-all text-left"
+                      >
+                        <span className="text-sm font-medium text-gray-900">🏠 "Busco casa en renta"</span>
+                      </button>
+                      <button
+                        onClick={() => {
+                          setInputMessage('Quiero comprar un departamento con 3 recámaras');
+                          setTimeout(() => handleSendMessage(), 100);
+                        }}
+                        className="px-4 py-3 bg-white border-2 border-purple-200 rounded-lg hover:border-purple-400 hover:bg-purple-50 transition-all text-left"
+                      >
+                        <span className="text-sm font-medium text-gray-900">🏢 "Quiero comprar departamento"</span>
+                      </button>
+                      <button
+                        onClick={() => {
+                          setInputMessage('¿Qué propiedades tienen disponibles?');
+                          setTimeout(() => handleSendMessage(), 100);
+                        }}
+                        className="px-4 py-3 bg-white border-2 border-purple-200 rounded-lg hover:border-purple-400 hover:bg-purple-50 transition-all text-left"
+                      >
+                        <span className="text-sm font-medium text-gray-900">📋 "¿Qué propiedades tienen?"</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
                 {currentSession.messages.map((message) => (
                   <div
                     key={message.id}

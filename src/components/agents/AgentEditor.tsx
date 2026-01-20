@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { ArrowLeft, Save, Eye, Settings, Brain, List, Database, Code, MessageSquare, HelpCircle, GitBranch } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ArrowLeft, Save, Eye, Settings, Brain, List, Database, Code, MessageSquare, HelpCircle, GitBranch, Sparkles, Cog } from 'lucide-react';
 import { useAgentStore } from '../../stores/useAgentStore';
 import { AgentSummary } from './tabs/AgentSummary';
+import { GuidedAgentConfig } from './GuidedAgentConfig';
 import { AgentBrain } from './tabs/AgentBrain';
 import { AgentTasks } from './tabs/AgentTasks';
 import { AgentTesting } from './tabs/AgentTesting';
@@ -12,21 +13,42 @@ import { HelpDialog } from './HelpDialog';
 
 type TabType = 'summary' | 'brain' | 'tasks' | 'facts' | 'flow' | 'testing' | 'advanced';
 
+const GUIDED_MODE_KEY = 'inmobiliario_agent_mode';
+
 export const AgentEditor: React.FC = () => {
   const { currentAgent, setCurrentAgent, saveAgent, loading } = useAgentStore();
   const [activeTab, setActiveTab] = useState<TabType>('summary');
   const [showHelp, setShowHelp] = useState(false);
+  const [isGuidedMode, setIsGuidedMode] = useState<boolean>(() => {
+    const saved = localStorage.getItem(GUIDED_MODE_KEY);
+    return saved ? saved === 'guided' : true;
+  });
+
+  useEffect(() => {
+    localStorage.setItem(GUIDED_MODE_KEY, isGuidedMode ? 'guided' : 'advanced');
+  }, [isGuidedMode]);
 
   if (!currentAgent) return null;
 
-  const tabs = [
-    { id: 'summary', label: 'Configuración General', icon: Settings },
-    { id: 'tasks', label: 'Tareas', icon: List },
-    { id: 'facts', label: 'Facts Personalizados', icon: Database },
-    { id: 'flow', label: 'Flujo de Comportamiento', icon: Brain },
-    { id: 'testing', label: 'Probar Agente', icon: MessageSquare },
-    { id: 'advanced', label: 'Configuración Avanzada', icon: Code }
+  const allTabs = [
+    { id: 'summary', label: 'Configuración General', icon: Settings, guidedVisible: true },
+    { id: 'tasks', label: 'Tareas', icon: List, guidedVisible: true },
+    { id: 'facts', label: 'Facts Personalizados', icon: Database, guidedVisible: false },
+    { id: 'flow', label: 'Flujo de Comportamiento', icon: Brain, guidedVisible: false },
+    { id: 'testing', label: 'Probar Asistente', icon: MessageSquare, guidedVisible: true },
+    { id: 'advanced', label: 'Configuración Avanzada', icon: Code, guidedVisible: false }
   ];
+
+  const tabs = isGuidedMode
+    ? allTabs.filter(tab => tab.guidedVisible)
+    : allTabs;
+
+  const handleModeToggle = () => {
+    setIsGuidedMode(!isGuidedMode);
+    if (!isGuidedMode && (activeTab === 'facts' || activeTab === 'flow' || activeTab === 'advanced')) {
+      setActiveTab('summary');
+    }
+  };
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -41,7 +63,7 @@ export const AgentEditor: React.FC = () => {
       case 'advanced':
         return <AgentAdvanced />;
       default:
-        return <AgentSummary />;
+        return isGuidedMode ? <GuidedAgentConfig /> : <AgentSummary />;
     }
   };
 
@@ -49,7 +71,7 @@ export const AgentEditor: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-4">
             <button
               onClick={() => setCurrentAgent(null)}
@@ -68,7 +90,7 @@ export const AgentEditor: React.FC = () => {
               currentAgent.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
               'bg-red-100 text-red-800'
             }`}>
-              {currentAgent.status === 'active' ? 'Activo' : 
+              {currentAgent.status === 'active' ? 'Activo' :
                currentAgent.status === 'draft' ? 'Borrador' : 'Obsoleto'}
             </span>
             <button
@@ -78,7 +100,7 @@ export const AgentEditor: React.FC = () => {
             >
               <HelpCircle className="h-5 w-5" />
             </button>
-            <button 
+            <button
               onClick={() => saveAgent(currentAgent)}
               disabled={loading}
               className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-200 disabled:opacity-50"
@@ -89,6 +111,33 @@ export const AgentEditor: React.FC = () => {
                 <Save className="h-4 w-4 mr-2" />
               )}
               {loading ? 'Guardando...' : 'Guardar Cambios'}
+            </button>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-center pt-4 border-t border-gray-100">
+          <div className="inline-flex items-center bg-gray-100 rounded-lg p-1">
+            <button
+              onClick={() => !isGuidedMode && handleModeToggle()}
+              className={`inline-flex items-center px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                isGuidedMode
+                  ? 'bg-white text-purple-600 shadow-sm'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              <Sparkles className="h-4 w-4 mr-2" />
+              Modo Guiado
+            </button>
+            <button
+              onClick={() => isGuidedMode && handleModeToggle()}
+              className={`inline-flex items-center px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                !isGuidedMode
+                  ? 'bg-white text-purple-600 shadow-sm'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              <Cog className="h-4 w-4 mr-2" />
+              Modo Avanzado
             </button>
           </div>
         </div>
