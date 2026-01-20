@@ -42,12 +42,13 @@ export const InteractionsDetail: React.FC = () => {
   };
 
   // Estadísticas rápidas
-  const totalInteractions = interactions.length;
-  const interactionsWithAppointment = interactions.filter(interaction => 
+  const safeInteractions = interactions || [];
+  const totalInteractions = safeInteractions.length;
+  const interactionsWithAppointment = safeInteractions.filter(interaction =>
     interaction.appointment?.type && interaction.appointment.type !== 'NOT_SCHEDULED'
   ).length;
-  const interactionsWithCsat = interactions.filter(interaction => interaction.quality.show_csat && interaction.quality.csat).length;
-  const escalatedInteractions = interactions.filter(interaction => interaction.quality.human_request).length;
+  const interactionsWithCsat = safeInteractions.filter(interaction => interaction.quality.show_csat && interaction.quality.csat).length;
+  const escalatedInteractions = safeInteractions.filter(interaction => interaction.quality.human_request).length;
 
   return (
     <div className="space-y-8">
@@ -169,8 +170,8 @@ export const InteractionsDetail: React.FC = () => {
             { type: 'PROPERTY_LEAD', label: 'Lead de Propiedad' },
             { type: 'SEARCH_LEAD', label: 'Lead de Búsqueda' }
           ].map(({ type, label }) => {
-            const count = interactions.filter(interaction => interaction.lead_type === type).length;
-            const percentage = ((count / totalInteractions) * 100).toFixed(1);
+            const count = safeInteractions.filter(interaction => interaction.lead_type === type).length;
+            const percentage = totalInteractions > 0 ? ((count / totalInteractions) * 100).toFixed(1) : '0.0';
 
             return (
               <div key={type} className="text-center p-4 bg-gray-50 rounded-lg">
@@ -184,7 +185,7 @@ export const InteractionsDetail: React.FC = () => {
       </div>
 
       {/* Tabla de Interacciones */}
-      <InteractionsTable interactions={interactions} onInteractionSelect={handleInteractionSelect} />
+      <InteractionsTable interactions={safeInteractions} onInteractionSelect={handleInteractionSelect} />
 
       {/* Modal de Detalle */}
       {selectedInteraction && (
