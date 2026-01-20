@@ -92,9 +92,9 @@ export const AgentsList: React.FC<AgentsListProps> = ({ onStartOnboarding }) => 
 
       {/* Grid de Agentes */}
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-        {agents.map((agent) => {
-          const taskTypes = [...new Set(agent.tasks.map(t => t.type))];
-          const enabledTasks = agent.tasks.filter(t => t.enabled).length;
+        {(agents || []).map((agent) => {
+          const taskTypes = [...new Set((agent.tasks || []).map(t => t.type))];
+          const enabledTasks = (agent.tasks || []).filter(t => t.enabled).length;
           
           return (
             <div

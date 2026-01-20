@@ -85,13 +85,13 @@ export const useAgentStore = create<AgentStore>()(
     set({ loading: true, error: null });
     try {
       const response = await agentAPI.getAgents();
-      set({ agents: response.data, loading: false, isOnline: true });
+      set({ agents: response.data || [], loading: false, isOnline: true });
     } catch (error) {
       console.error('Error fetching agents:', error);
-      set({ 
-        error: 'Error al cargar agentes. Usando datos locales.', 
+      set({
+        error: 'Error al cargar agentes. Usando datos locales.',
         loading: false,
-        isOnline: false 
+        isOnline: false
       });
       // Fallback to mock data if API fails
       get().initializeMockData();
@@ -117,7 +117,7 @@ export const useAgentStore = create<AgentStore>()(
     try {
       const newAgent = await agentAPI.createAgent(agentData);
       set((state) => ({
-        agents: [...state.agents, newAgent],
+        agents: [...(state.agents || []), newAgent],
         currentAgent: newAgent,
         loading: false
       }));
@@ -134,7 +134,7 @@ export const useAgentStore = create<AgentStore>()(
 
   updateAgent: (agent) => {
     set((state) => ({
-      agents: state.agents.map(a => a.id === agent.id ? agent : a),
+      agents: (state.agents || []).map(a => a.id === agent.id ? agent : a),
       currentAgent: state.currentAgent?.id === agent.id ? agent : state.currentAgent
     }));
   },
@@ -180,7 +180,7 @@ export const useAgentStore = create<AgentStore>()(
     try {
       await agentAPI.deleteAgent(id);
       set((state) => ({
-        agents: state.agents.filter(a => a.id !== id),
+        agents: (state.agents || []).filter(a => a.id !== id),
         currentAgent: state.currentAgent?.id === id ? null : state.currentAgent,
         loading: false
       }));
@@ -215,7 +215,7 @@ export const useAgentStore = create<AgentStore>()(
     };
 
     set((state) => ({
-      agents: state.agents.map(a => a.id === updatedAgent.id ? updatedAgent : a),
+      agents: (state.agents || []).map(a => a.id === updatedAgent.id ? updatedAgent : a),
       currentAgent: updatedAgent,
       selectedTask: state.selectedTask?.id === taskId ? 
         updatedTasks.find(t => t.id === taskId) || state.selectedTask : 
@@ -704,7 +704,7 @@ export const useAgentStore = create<AgentStore>()(
       try {
         const newAgent = await agentAPI.createAgent(duplicatedAgent);
         set((state) => ({
-          agents: [...state.agents, newAgent],
+          agents: [...(state.agents || []), newAgent],
           loading: false
         }));
         return newAgent;
@@ -717,9 +717,9 @@ export const useAgentStore = create<AgentStore>()(
           createdAt: new Date(),
           updatedAt: new Date()
         };
-        
+
         set((state) => ({
-          agents: [...state.agents, localAgent],
+          agents: [...(state.agents || []), localAgent],
           loading: false
         }));
         return localAgent;
