@@ -1,6 +1,7 @@
 import {
   BarChart3,
   Building2,
+  Users,
   MessageCircle,
   TrendingUp,
   Search,
@@ -16,6 +17,7 @@ import { useState } from 'react';
 const modules = [
   { id: 'dashboard', name: 'Panel Principal', icon: BarChart3, color: 'text-orange-500' },
   { id: 'properties', name: 'Propiedades', icon: Building2, color: 'text-blue-500' },
+  { id: 'leads', name: 'Leads (CRM)', icon: Users, color: 'text-green-500' },
   { id: 'interactions', name: 'Conversaciones', icon: MessageCircle, color: 'text-purple-500' },
   { id: 'conversion', name: 'Análisis de Conversión', icon: TrendingUp, color: 'text-green-500' },
   { id: 'search', name: 'Leads de Búsqueda', icon: Search, color: 'text-blue-500' },
@@ -77,7 +79,7 @@ export const Layout = ({ children }: LayoutProps) => {
               {modules.map((module) => {
                 const Icon = module.icon;
                 const isActive = currentModule === module.id;
-                const isImplemented = module.id === 'dashboard' || module.id === 'properties' || module.id === 'interactions' || module.id === 'conversion' || module.id === 'search' || module.id === 'appointments' || module.id === 'quality' || module.id === 'agents';
+                const isImplemented = module.id === 'dashboard' || module.id === 'properties' || module.id === 'leads' || module.id === 'interactions' || module.id === 'conversion' || module.id === 'search' || module.id === 'appointments' || module.id === 'quality' || module.id === 'agents';
                 
                 return (
                   <button

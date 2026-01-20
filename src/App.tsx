@@ -7,6 +7,7 @@ import { AppointmentsModule } from './components/appointments/AppointmentsModule
 import { QualityModule } from './components/quality/QualityModule';
 import { AgentsModule } from './components/agents/AgentsModule';
 import { PropertiesModule } from './components/properties/PropertiesModule';
+import { LeadsModule } from './components/leads/LeadsModule';
 import { useInteractionStore } from './stores/useInteractionStore';
 import { PublicPlayground } from './components/public-playground';
 
@@ -26,6 +27,8 @@ function App() {
         return <DashboardExecutive />;
       case 'properties':
         return <PropertiesModule />;
+      case 'leads':
+        return <LeadsModule />;
       case 'interactions':
         return <InteractionsDetail />;
       case 'conversion':
