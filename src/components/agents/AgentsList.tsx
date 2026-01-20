@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bot, Plus, Settings, Eye, Calendar, MessageSquare, Copy } from 'lucide-react';
+import { Bot, Plus, Settings, Eye, Calendar, MessageSquare, Copy, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { useAgentStore } from '../../stores/useAgentStore';
 import { AGENT_TYPES, TASK_TYPES } from '../../types/agents';
@@ -7,7 +7,11 @@ import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { AgentTemplateSelector } from './AgentTemplateSelector';
 
-export const AgentsList: React.FC = () => {
+interface AgentsListProps {
+  onStartOnboarding?: () => void;
+}
+
+export const AgentsList: React.FC<AgentsListProps> = ({ onStartOnboarding }) => {
   const { agents, setCurrentAgent, deleteAgent, duplicateAgent, loading } = useAgentStore();
   const [showTemplateSelector, setShowTemplateSelector] = useState(false);
   const [deletingAgent, setDeletingAgent] = useState<string | null>(null);
@@ -200,12 +204,26 @@ export const AgentsList: React.FC = () => {
       {agents.length === 0 && (
         <div className="text-center py-12">
           <Bot className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No hay agentes configurados</h3>
-          <p className="text-gray-500 mb-6">Crea tu primer asistente conversacional para comenzar</p>
-          <button className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg hover:from-purple-600 hover:to-purple-700 transition-all duration-200 shadow-lg">
-            <Plus className="h-5 w-5 mr-2" />
-            Crear Primer Agente
-          </button>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">No hay asistentes configurados</h3>
+          <p className="text-gray-500 mb-6">Crea tu primer asistente conversacional en segundos</p>
+          <div className="flex items-center justify-center space-x-3">
+            {onStartOnboarding && (
+              <button
+                onClick={onStartOnboarding}
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg hover:from-purple-600 hover:to-purple-700 transition-all duration-200 shadow-lg"
+              >
+                <Sparkles className="h-5 w-5 mr-2" />
+                Configuración Guiada
+              </button>
+            )}
+            <button
+              onClick={() => setShowTemplateSelector(true)}
+              className="inline-flex items-center px-6 py-3 bg-white border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
+            >
+              <Plus className="h-5 w-5 mr-2" />
+              Usar Plantillas
+            </button>
+          </div>
         </div>
       )}
     </div>

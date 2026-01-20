@@ -1,20 +1,27 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Bot, Wifi, WifiOff, AlertCircle } from 'lucide-react';
 import { useAgentStore } from '../../stores/useAgentStore';
 import { AgentsList } from './AgentsList';
 import { AgentEditor } from './AgentEditor';
+import { QuickStartOnboarding } from './QuickStartOnboarding';
+
+const ONBOARDING_KEY = 'inmobiliario_onboarding_completed';
 
 export const AgentsModule: React.FC = () => {
-  const { 
-    currentAgent, 
-    loading, 
-    error, 
-    isOnline, 
-    fetchAgents, 
-    checkConnection, 
+  const {
+    agents,
+    currentAgent,
+    loading,
+    error,
+    isOnline,
+    fetchAgents,
+    checkConnection,
     initializeMockData,
-    setError 
+    setError
   } = useAgentStore();
+
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -24,11 +31,42 @@ export const AgentsModule: React.FC = () => {
       } catch (error) {
         console.warn('API not available, using mock data');
         initializeMockData();
+      } finally {
+        setDataLoaded(true);
       }
     };
-    
+
     loadData();
   }, [fetchAgents, checkConnection, initializeMockData]);
+
+  useEffect(() => {
+    if (dataLoaded && !loading) {
+      const onboardingCompleted = localStorage.getItem(ONBOARDING_KEY) === 'true';
+      const hasNoAgents = agents.length === 0;
+
+      if (hasNoAgents && !onboardingCompleted) {
+        setShowOnboarding(true);
+      }
+    }
+  }, [dataLoaded, loading, agents.length]);
+
+  const handleCompleteOnboarding = () => {
+    setShowOnboarding(false);
+  };
+
+  const handleSkipOnboarding = () => {
+    localStorage.setItem(ONBOARDING_KEY, 'true');
+    setShowOnboarding(false);
+  };
+
+  if (showOnboarding) {
+    return (
+      <QuickStartOnboarding
+        onComplete={handleCompleteOnboarding}
+        onSkip={handleSkipOnboarding}
+      />
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -46,12 +84,12 @@ export const AgentsModule: React.FC = () => {
                   <p className="text-gray-600">Configura y administra agentes IA especializados en el sector inmobiliario</p>
                 </div>
               </div>
-              
+
               {/* Connection Status */}
               <div className="flex items-center space-x-3">
                 <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-sm font-medium ${
-                  isOnline 
-                    ? 'bg-green-100 text-green-800' 
+                  isOnline
+                    ? 'bg-green-100 text-green-800'
                     : 'bg-yellow-100 text-yellow-800'
                 }`}>
                   {isOnline ? (
@@ -68,7 +106,7 @@ export const AgentsModule: React.FC = () => {
                 </div>
               </div>
             </div>
-            
+
             {/* Error Message */}
             {error && (
               <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
@@ -102,7 +140,7 @@ export const AgentsModule: React.FC = () => {
           )}
 
           {/* Lista de Agentes */}
-          {!loading && <AgentsList />}
+          {!loading && <AgentsList onStartOnboarding={() => setShowOnboarding(true)} />}
         </React.Fragment>
       ) : (
         <AgentEditor />
