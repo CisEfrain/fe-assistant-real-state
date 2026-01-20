@@ -45,7 +45,7 @@ export const QualityModule: React.FC = () => {
 
   // Filtrar llamadas según los filtros aplicados
   const filteredInteractions = useMemo(() => {
-    return interactions.filter(interaction => {
+    return (interactions || []).filter(interaction => {
       // Aplicar filtros
       if (filters.channel && interaction.channel !== filters.channel) return false;
       if (filters.operationType && interaction.operation_type !== filters.operationType) return false;
@@ -59,7 +59,7 @@ export const QualityModule: React.FC = () => {
   }, [interactions, filters]);
 
   // Métricas rápidas
-  const csatShown = interactions.filter(interaction => interaction.show_csat);
+  const csatShown = (interactions || []).filter(interaction => interaction.show_csat);
   const csatResponded = csatShown.filter(interaction => interaction.quality.csat);
   const complaints = filteredInteractions.filter(interaction => interaction.quality.complaint);
   const humanRequests = filteredInteractions.filter(interaction => interaction.quality.human_request);

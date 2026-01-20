@@ -23,12 +23,12 @@ export const ImpactBlock: React.FC<ImpactBlockProps> = ({ dateFilters }) => {
       } catch (error) {
         console.warn('Using local impact calculations');
         // Usar las mismas interacciones que el dashboard
-        const filteredInteractions = dateFilters ? 
-          interactions.filter(interaction => {
+        const filteredInteractions = dateFilters ?
+          (interactions || []).filter(interaction => {
             const interactionDate = new Date(interaction.created_at).toISOString().split('T')[0];
             return interactionDate >= dateFilters.start_date && interactionDate <= dateFilters.end_date;
-          }) : 
-          interactions;
+          }) :
+          (interactions || []);
         const localImpact = calculateLocalImpact(filteredInteractions);
         setImpact(localImpact);
       }
@@ -50,7 +50,7 @@ export const ImpactBlock: React.FC<ImpactBlockProps> = ({ dateFilters }) => {
     }
     
     // Calcular satisfacción positiva
-    const csatResponses = interactions.filter(interaction => interaction.quality.csat);
+    const csatResponses = (interactions || []).filter(interaction => interaction.quality.csat);
     const positiveCsat = csatResponses.filter(interaction => {
       const csat = interaction.quality.csat;
       if (typeof csat === 'string') {
@@ -69,26 +69,26 @@ export const ImpactBlock: React.FC<ImpactBlockProps> = ({ dateFilters }) => {
       : 0;
     
     // Valor total de propiedades
-    const totalPropertyValue = interactions
+    const totalPropertyValue = (interactions || [])
       .filter(interaction => interaction.original_property?.price?.amount)
       .reduce((sum, interaction) => sum + (interaction.original_property?.price?.amount || 0), 0);
     
     // Citas agendadas
-    const appointmentsScheduled = interactions.filter(interaction => 
+    const appointmentsScheduled = (interactions || []).filter(interaction =>
       interaction.appointment?.type && interaction.appointment.type !== 'NOT_SCHEDULED'
     ).length;
-    
+
     // Valor con cita
-    const potentialValueWithAppointment = interactions
-      .filter(interaction => 
-        interaction.appointment?.type && 
+    const potentialValueWithAppointment = (interactions || [])
+      .filter(interaction =>
+        interaction.appointment?.type &&
         interaction.appointment.type !== 'NOT_SCHEDULED' &&
         interaction.original_property?.price?.amount
       )
       .reduce((sum, interaction) => sum + (interaction.original_property?.price?.amount || 0), 0);
-    
+
     // Horario humano: Lunes a Viernes 9:00-18:00, Sábados 9:00-14:00
-    const offHoursInteractions = interactions.filter(interaction => {
+    const offHoursInteractions = (interactions || []).filter(interaction => {
       const date = new Date(interaction.created_at);
       const hour = date.getHours();
       const dayOfWeek = date.getDay(); // 0 = Domingo, 6 = Sábado

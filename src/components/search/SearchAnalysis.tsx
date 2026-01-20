@@ -42,7 +42,7 @@ export const SearchAnalysis: React.FC = () => {
 
   // Filtrar solo SEARCH_LEAD
   const searchLeads = useMemo(() => {
-    return interactions.filter(interaction => {
+    return (interactions || []).filter(interaction => {
       if (interaction.lead_type !== 'SEARCH_LEAD') return false;
       if (!interaction.search) return false;
 

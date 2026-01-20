@@ -44,7 +44,7 @@ export const AppointmentsModule: React.FC = () => {
 
   // Filtrar solo llamadas con citas agendadas
   const appointmentsWithFilters = useMemo(() => {
-    return interactions.filter(interaction => {
+    return (interactions || []).filter(interaction => {
       // Solo llamadas con citas agendadas
       if (!interaction.appointment?.type || interaction.appointment.type === 'NOT_SCHEDULED') return false;
       if (!interaction.appointment.date) return false;
