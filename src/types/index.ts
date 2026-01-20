@@ -135,33 +135,8 @@ export interface CookieConfig {
   maxAge: number;
 }
 
-// Other Contacts Types (interactions not processed as leads)
 export interface ConversationMessage {
   role: 'user' | 'assistant';
   content: string;
   timestamp: string;
-}
-
-export interface OtherContactRecord {
-  id: string;
-  additional_comment: string;
-  has_complaint: boolean;
-  complaint: string | null;
-  conversation: ConversationMessage[];
-  metadata: Record<string, any>; // Flexible metadata structure
-  channel?: 'whatsapp' | 'webchat' | 'widget_testing'; // Optional until backend includes it
-  created_at: string;
-  tags: string[];
-}
-
-export interface OtherContactFilters {
-  channel?: 'whatsapp' | 'webchat' | 'widget_testing';
-  has_complaint?: boolean;
-  tags?: string[]; // Filter by tags (OR logic - show contacts with any of these tags)
-  start_date?: string;
-  end_date?: string;
-  page?: number;
-  limit?: number;
-  sort_by?: string;
-  sort_order?: 'ASC' | 'DESC';
 }
