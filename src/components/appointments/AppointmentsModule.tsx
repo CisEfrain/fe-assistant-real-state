@@ -60,7 +60,7 @@ export const AppointmentsModule: React.FC = () => {
     });
   }, [interactions, filters]);
 
-  const totalInteractionsWithAppointments = interactions.filter(interaction => 
+  const totalInteractionsWithAppointments = (interactions || []).filter(interaction =>
     interaction.appointment?.type && interaction.appointment.type !== 'NOT_SCHEDULED'
   ).length;
 

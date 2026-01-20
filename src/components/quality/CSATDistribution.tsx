@@ -7,7 +7,7 @@ interface CSATDistributionProps {
 }
 
 export const CSATDistribution: React.FC<CSATDistributionProps> = ({ interactions }) => {
-  const csatResponses = interactions.filter(interaction => interaction.quality.csat);
+  const csatResponses = (interactions || []).filter(interaction => interaction.quality.csat);
   
   // Normalizar valores CSAT a formato estándar
   const normalizeCSAT = (csat: string) => {

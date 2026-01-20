@@ -58,7 +58,7 @@ export const InteractionsTable: React.FC<InteractionsTableProps> = ({ interactio
 
   // Filtrar y ordenar datos
   const filteredAndSortedInteractions = useMemo(() => {
-    const filtered = interactions.filter(interaction => {
+    const filtered = (interactions || []).filter(interaction => {
       const { name, phone } = extractContactInfo(interaction.metadata);
       const matchesSearch = searchTerm === '' || 
         name.toLowerCase().includes(searchTerm.toLowerCase()) ||

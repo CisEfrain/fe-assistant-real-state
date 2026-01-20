@@ -7,7 +7,7 @@ interface ComplaintAnalysisProps {
 }
 
 export const ComplaintAnalysis: React.FC<ComplaintAnalysisProps> = ({ interactions }) => {
-  const interactionsWithComplaints = interactions.filter(interaction => interaction.quality.complaint);
+  const interactionsWithComplaints = (interactions || []).filter(interaction => interaction.quality.complaint);
   
   // Análisis por tipo de operación
   const complaintsBySell = interactionsWithComplaints.filter(interaction => interaction.operation_type === 'SELL').length;
@@ -38,7 +38,7 @@ export const ComplaintAnalysis: React.FC<ComplaintAnalysisProps> = ({ interactio
             </div>
             <div>
               <h3 className="text-lg font-semibold text-white">Análisis de Reclamos</h3>
-              <p className="text-red-100 text-sm">{interactionsWithComplaints.length} reclamos de {interactions.length} interacciones</p>
+              <p className="text-red-100 text-sm">{interactionsWithComplaints.length} reclamos de {interactions?.length || 0} interacciones</p>
             </div>
           </div>
         </div>
@@ -48,7 +48,7 @@ export const ComplaintAnalysis: React.FC<ComplaintAnalysisProps> = ({ interactio
             {/* Tasa General */}
             <div className="text-center">
               <div className="text-3xl font-bold text-red-600">
-                {((interactionsWithComplaints.length / interactions.length) * 100).toFixed(2)}%
+                {interactions?.length ? ((interactionsWithComplaints.length / interactions.length) * 100).toFixed(2) : 0}%
               </div>
               <div className="text-sm text-gray-600">Tasa de Reclamos</div>
             </div>

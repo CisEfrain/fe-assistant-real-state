@@ -8,7 +8,7 @@ interface QualityMetricsProps {
 
 export const QualityMetrics: React.FC<QualityMetricsProps> = ({ interactions }) => {
   // Métricas de CSAT
-  const csatShown = interactions.filter(interaction => interaction.quality.show_csat);
+  const csatShown = (interactions || []).filter(interaction => interaction.quality.show_csat);
   const csatResponded = csatShown.filter(interaction => interaction.quality.csat);
   const csatResponseRate = csatShown.length > 0 ? (csatResponded.length / csatShown.length) * 100 : 0;
 
@@ -29,19 +29,19 @@ export const QualityMetrics: React.FC<QualityMetricsProps> = ({ interactions }) 
   const satisfactionRate = csatResponded.length > 0 ? (positiveCsat.length / csatResponded.length) * 100 : 0;
 
   // Reclamos
-  const interactionsWithComplaints = interactions.filter(interaction => interaction.quality.complaint);
-  const complaintRate = (interactionsWithComplaints.length / interactions.length) * 100;
+  const interactionsWithComplaints = (interactions || []).filter(interaction => interaction.quality.complaint);
+  const complaintRate = interactions?.length ? (interactionsWithComplaints.length / interactions.length) * 100 : 0;
 
   // Escalamiento humano
-  const humanRequests = interactions.filter(interaction => interaction.quality.human_request);
-  const humanRequestRate = (humanRequests.length / interactions.length) * 100;
+  const humanRequests = (interactions || []).filter(interaction => interaction.quality.human_request);
+  const humanRequestRate = interactions?.length ? (humanRequests.length / interactions.length) * 100 : 0;
 
   // No respuesta de agente
-  const humanNoResponse = interactions.filter(interaction => interaction.quality.human_resquest_no_response);
+  const humanNoResponse = (interactions || []).filter(interaction => interaction.quality.human_resquest_no_response);
   const noResponseRate = humanRequests.length > 0 ? (humanNoResponse.length / humanRequests.length) * 100 : 0;
 
   // Usuarios que no recibieron encuesta
-  const noSurveyRate = ((interactions.length - csatShown.length) / interactions.length) * 100;
+  const noSurveyRate = interactions?.length ? ((interactions.length - csatShown.length) / interactions.length) * 100 : 0;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -135,7 +135,7 @@ export const QualityMetrics: React.FC<QualityMetricsProps> = ({ interactions }) 
             <div className="text-2xl font-bold text-gray-900">{noSurveyRate.toFixed(1)}%</div>
             <div className="text-sm text-gray-600">Sin Encuesta Ofrecida</div>
             <div className="text-xs text-purple-600 font-medium">
-              {interactions.length - csatShown.length} usuarios sin CSAT
+              {(interactions?.length || 0) - csatShown.length} usuarios sin CSAT
             </div>
           </div>
         </div>

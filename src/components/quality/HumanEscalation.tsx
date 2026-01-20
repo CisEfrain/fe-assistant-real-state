@@ -7,8 +7,8 @@ interface HumanEscalationProps {
 }
 
 export const HumanEscalation: React.FC<HumanEscalationProps> = ({ interactions }) => {
-  const humanRequests = interactions.filter(interaction => interaction.quality.human_request);
-  const humanNoResponse = interactions.filter(interaction => interaction.quality.human_resquest_no_response);
+  const humanRequests = (interactions || []).filter(interaction => interaction.quality.human_request);
+  const humanNoResponse = (interactions || []).filter(interaction => interaction.quality.human_resquest_no_response);
   const humanResponded = humanRequests.filter(interaction => !interaction.quality.human_resquest_no_response);
 
   // Análisis por tipo de operación
@@ -35,7 +35,7 @@ export const HumanEscalation: React.FC<HumanEscalationProps> = ({ interactions }
             </div>
             <div>
               <h3 className="text-lg font-semibold text-white">Escalamiento a Agentes Humanos</h3>
-              <p className="text-orange-100 text-sm">{humanRequests.length} solicitudes de {interactions.length} interacciones</p>
+              <p className="text-orange-100 text-sm">{humanRequests.length} solicitudes de {interactions?.length || 0} interacciones</p>
             </div>
           </div>
         </div>
@@ -45,7 +45,7 @@ export const HumanEscalation: React.FC<HumanEscalationProps> = ({ interactions }
             {/* Tasa de Escalamiento */}
             <div className="text-center">
               <div className="text-3xl font-bold text-orange-600">
-                {((humanRequests.length / interactions.length) * 100).toFixed(1)}%
+                {interactions?.length ? ((humanRequests.length / interactions.length) * 100).toFixed(1) : 0}%
               </div>
               <div className="text-sm text-gray-600">Tasa de Escalamiento</div>
             </div>
@@ -75,7 +75,7 @@ export const HumanEscalation: React.FC<HumanEscalationProps> = ({ interactions }
             {/* Eficiencia IA */}
             <div className="text-center">
               <div className="text-3xl font-bold text-blue-600">
-                {(((interactions.length - humanRequests.length) / interactions.length) * 100).toFixed(1)}%
+                {interactions?.length ? (((interactions.length - humanRequests.length) / interactions.length) * 100).toFixed(1) : 0}%
               </div>
               <div className="text-sm text-gray-600">Resuelto por IA</div>
               <div className="text-xs text-blue-600 font-medium">
