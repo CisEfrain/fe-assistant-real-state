@@ -1,0 +1,193 @@
+{
+  "data": [
+    {
+      "id": "507f1f77bcf86cd799439011",
+      "additional_comment": "Cliente preguntó por servicios fuera de nuestro alcance, se le proporcionó información general",
+      "has_complaint": false,
+      "complaint": "",
+      "conversation": [
+        {
+          "role": "user",
+          "content": "Hola, necesito información sobre seguros de hogar",
+          "timestamp": "2024-01-15T10:30:00.000Z"
+        },
+        {
+          "role": "assistant",
+          "content": "Hola, gracias por contactarnos. Lamentablemente no ofrecemos servicios de seguros, somos una inmobiliaria especializada en compra, venta y alquiler de propiedades.",
+          "timestamp": "2024-01-15T10:30:15.000Z"
+        },
+        {
+          "role": "user",
+          "content": "Entiendo, gracias de todas formas",
+          "timestamp": "2024-01-15T10:30:45.000Z"
+        }
+      ],
+      "metadata": {
+        "phone_number": "+5491112345678",
+        "session_duration_seconds": 45,
+        "interaction_type": "out_of_scope",
+        "referred_to": null
+      },
+      "channel": "whatsapp",
+      "created_at": "2024-01-15T10:30:00.000Z"
+    },
+    {
+      "id": "507f1f77bcf86cd799439012",
+      "additional_comment": "Cliente reportó problema con atención previa, se escaló a supervisor",
+      "has_complaint": true,
+      "complaint": "El agente anterior me colgó sin darme solución. Muy mala atención.",
+      "conversation": [
+        {
+          "role": "user",
+          "content": "Quiero hablar con un supervisor, el agente anterior me trató muy mal",
+          "timestamp": "2024-01-15T14:20:00.000Z"
+        },
+        {
+          "role": "assistant",
+          "content": "Lamento mucho escuchar eso. Voy a registrar tu queja y conectarte con un supervisor de inmediato. ¿Podrías darme más detalles?",
+          "timestamp": "2024-01-15T14:20:10.000Z"
+        },
+        {
+          "role": "user",
+          "content": "Me colgó sin darme información sobre una propiedad que vi en su página",
+          "timestamp": "2024-01-15T14:20:30.000Z"
+        },
+        {
+          "role": "assistant",
+          "content": "Entiendo tu frustración. He registrado tu queja con el ID #12345 y un supervisor te contactará en los próximos 15 minutos.",
+          "timestamp": "2024-01-15T14:21:00.000Z"
+        }
+      ],
+      "metadata": {
+        "phone_number": "+5491198765432",
+        "session_duration_seconds": 180,
+        "interaction_type": "complaint",
+        "complaint_id": "12345",
+        "escalated_to": "supervisor_team",
+        "priority": "high"
+      },
+      "channel": "call",
+      "created_at": "2024-01-15T14:20:00.000Z"
+    },
+    {
+      "id": "507f1f77bcf86cd799439013",
+      "additional_comment": "Consulta general sobre horarios de atención, no mostró interés en propiedades",
+      "has_complaint": false,
+      "complaint": "",
+      "conversation": [
+        {
+          "role": "user",
+          "content": "¿Hasta qué hora atienden?",
+          "timestamp": "2024-01-15T18:45:00.000Z"
+        },
+        {
+          "role": "assistant",
+          "content": "Nuestro horario de atención es de lunes a viernes de 9:00 a 18:00 hs, y sábados de 10:00 a 14:00 hs. ¿En qué más puedo ayudarte?",
+          "timestamp": "2024-01-15T18:45:05.000Z"
+        },
+        {
+          "role": "user",
+          "content": "Ok, gracias",
+          "timestamp": "2024-01-15T18:45:20.000Z"
+        }
+      ],
+      "metadata": {
+        "phone_number": "+5491156789012",
+        "session_duration_seconds": 20,
+        "interaction_type": "general_inquiry"
+      },
+      "channel": "whatsapp",
+      "created_at": "2024-01-15T18:45:00.000Z"
+    },
+    {
+      "id": "507f1f77bcf86cd799439014",
+      "additional_comment": "Cliente solicitó información sobre trámites legales que no manejamos directamente",
+      "has_complaint": false,
+      "complaint": "",
+      "conversation": [
+        {
+          "role": "user",
+          "content": "Necesito ayuda con la escrituración de una propiedad que compré hace 3 meses",
+          "timestamp": "2024-01-16T09:15:00.000Z"
+        },
+        {
+          "role": "assistant",
+          "content": "Entiendo tu situación. Nosotros no manejamos directamente trámites de escrituración, pero puedo recomendarte estudios jurídicos especializados. ¿Te gustaría que te pase algunos contactos?",
+          "timestamp": "2024-01-16T09:15:20.000Z"
+        },
+        {
+          "role": "user",
+          "content": "Sí, por favor. Necesito resolver esto pronto",
+          "timestamp": "2024-01-16T09:15:45.000Z"
+        },
+        {
+          "role": "assistant",
+          "content": "Te envío por WhatsApp los datos de 3 estudios jurídicos de confianza que trabajan con nosotros. Todos tienen experiencia en escrituraciones.",
+          "timestamp": "2024-01-16T09:16:10.000Z"
+        },
+        {
+          "role": "user",
+          "content": "Perfecto, muchas gracias por la ayuda",
+          "timestamp": "2024-01-16T09:16:30.000Z"
+        }
+      ],
+      "metadata": {
+        "phone_number": "+5491145678901",
+        "session_duration_seconds": 90,
+        "interaction_type": "out_of_scope",
+        "referred_to": "legal_partners",
+        "referral_count": 3
+      },
+      "channel": "whatsapp",
+      "created_at": "2024-01-16T09:15:00.000Z"
+    },
+    {
+      "id": "507f1f77bcf86cd799439015",
+      "additional_comment": "Queja por demora en respuesta de consulta previa, se ofreció disculpas y seguimiento",
+      "has_complaint": true,
+      "complaint": "Hace 2 días consulté por una propiedad y nadie me respondió. Pésimo servicio.",
+      "conversation": [
+        {
+          "role": "user",
+          "content": "Hace 2 días mandé un mensaje y nadie me contestó. Esto es inaceptable",
+          "timestamp": "2024-01-16T11:30:00.000Z"
+        },
+        {
+          "role": "assistant",
+          "content": "Lamento mucho la demora en nuestra respuesta. Esto no debería haber ocurrido. ¿Podrías darme tu número de teléfono o email para verificar tu consulta anterior?",
+          "timestamp": "2024-01-16T11:30:15.000Z"
+        },
+        {
+          "role": "user",
+          "content": "Mi teléfono es +5491134567890. Consulté por un departamento en Palermo",
+          "timestamp": "2024-01-16T11:30:45.000Z"
+        },
+        {
+          "role": "assistant",
+          "content": "Encontré tu consulta. Efectivamente hubo una falla en nuestro sistema de notificaciones. Te pido disculpas. Voy a registrar tu queja y un agente especializado te contactará en la próxima hora para atender tu consulta sobre el departamento en Palermo.",
+          "timestamp": "2024-01-16T11:31:30.000Z"
+        },
+        {
+          "role": "user",
+          "content": "Está bien, espero que esta vez sí me respondan",
+          "timestamp": "2024-01-16T11:32:00.000Z"
+        }
+      ],
+      "metadata": {
+        "phone_number": "+5491134567890",
+        "session_duration_seconds": 120,
+        "interaction_type": "complaint",
+        "complaint_id": "12346",
+        "escalated_to": "sales_team",
+        "priority": "medium",
+        "previous_interaction_id": "507f1f77bcf86cd799438999"
+      },
+      "channel": "whatsapp",
+      "created_at": "2024-01-16T11:30:00.000Z"
+    }
+  ],
+  "total": 127,
+  "page": 1,
+  "limit": 20,
+  "totalPages": 7
+}
