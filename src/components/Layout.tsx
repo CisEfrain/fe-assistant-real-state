@@ -1,28 +1,25 @@
-import { 
-  BarChart3, 
-  Phone, 
-  TrendingUp, 
-  Search, 
-  Calendar, 
+import {
+  BarChart3,
+  MessageCircle,
+  TrendingUp,
+  Search,
+  Calendar,
   MessageSquare,
   Bot,
   Menu,
-  X,
-  LogOut
+  X
 } from 'lucide-react';
 import { useInteractionStore } from '../stores/useInteractionStore';
-import { useAuth } from './auth';
 import { useState } from 'react';
 
 const modules = [
-  { id: 'dashboard', name: 'Dashboard Ejecutivo', icon: BarChart3, color: 'text-orange-500' },
-  { id: 'interactions', name: 'Detalle de Interacciones', icon: Phone, color: 'text-purple-500' },
+  { id: 'dashboard', name: 'Panel Principal', icon: BarChart3, color: 'text-orange-500' },
+  { id: 'interactions', name: 'Conversaciones', icon: MessageCircle, color: 'text-purple-500' },
   { id: 'conversion', name: 'Análisis de Conversión', icon: TrendingUp, color: 'text-green-500' },
   { id: 'search', name: 'Leads de Búsqueda', icon: Search, color: 'text-blue-500' },
   { id: 'appointments', name: 'Citas Agendadas', icon: Calendar, color: 'text-indigo-500' },
   { id: 'quality', name: 'Calidad Conversacional', icon: MessageSquare, color: 'text-pink-500' },
-  { id: 'other-contacts', name: 'Otros Contactos', icon: MessageSquare, color: 'text-gray-500' },
-  { id: 'agents', name: 'Asistentes Conversacionales', icon: Bot, color: 'text-purple-600' },
+  { id: 'agents', name: 'Asistentes', icon: Bot, color: 'text-purple-600' },
 ];
 
 interface LayoutProps {
@@ -32,7 +29,6 @@ interface LayoutProps {
 export const Layout = ({ children }: LayoutProps) => {
   const { currentModule, setCurrentModule } = useInteractionStore();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { logout } = useAuth();
 
   const currentModuleData = modules.find(m => m.id === currentModule);
 
@@ -48,32 +44,23 @@ export const Layout = ({ children }: LayoutProps) => {
             >
               {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
-            
+
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-gradient-to-r from-orange-500 to-purple-600 rounded-lg">
                 <Bot className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">IAD Contact Center</h1>
-                <p className="text-sm text-gray-500">Agente IA "Santi" - Monitoreo y Análisis</p>
+                <h1 className="text-xl font-bold text-gray-900">Asistente IA Inmobiliario</h1>
+                <p className="text-sm text-gray-500">Plataforma Inteligente para Asesores Inmobiliarios</p>
               </div>
             </div>
           </div>
-          
+
           <div className="flex items-center space-x-3">
             <div className="hidden md:flex items-center space-x-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               Sistema Activo
             </div>
-            
-            <button
-              onClick={logout}
-              className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-              title="Cerrar Sesión"
-            >
-              <LogOut size={18} />
-              <span className="hidden sm:inline text-sm font-medium">Salir</span>
-            </button>
           </div>
         </div>
       </header>
@@ -88,7 +75,7 @@ export const Layout = ({ children }: LayoutProps) => {
               {modules.map((module) => {
                 const Icon = module.icon;
                 const isActive = currentModule === module.id;
-                const isImplemented = module.id === 'dashboard' || module.id === 'interactions' || module.id === 'conversion' || module.id === 'search' || module.id === 'appointments' || module.id === 'quality' || module.id === 'other-contacts' || module.id === 'agents';
+                const isImplemented = module.id === 'dashboard' || module.id === 'interactions' || module.id === 'conversion' || module.id === 'search' || module.id === 'appointments' || module.id === 'quality' || module.id === 'agents';
                 
                 return (
                   <button
@@ -122,8 +109,8 @@ export const Layout = ({ children }: LayoutProps) => {
             
             <div className="px-4 pb-4 border-t border-gray-200 pt-4">
               <div className="text-center text-sm text-gray-500">
-                <p>v1.0.0 - Dashboard</p>
-                <p className="text-xs mt-1">Desarrollado por IAD</p>
+                <p>v2.0.0 - Inmobiliario</p>
+                <p className="text-xs mt-1">Asistente IA</p>
               </div>
             </div>
           </div>
@@ -143,10 +130,10 @@ export const Layout = ({ children }: LayoutProps) => {
             {/* Breadcrumb */}
             <div className="mb-6">
               <div className="flex items-center space-x-2 text-sm text-gray-500">
-                <span>IAD Contact Center</span>
+                <span>Asistente IA Inmobiliario</span>
                 <span>/</span>
                 <span className="text-gray-900 font-medium">
-                  {currentModuleData?.name || 'Dashboard'}
+                  {currentModuleData?.name || 'Panel Principal'}
                 </span>
               </div>
             </div>

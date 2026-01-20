@@ -3,9 +3,9 @@ import { InteractionRecord } from '../types';
 // Generar datos mock realistas
 export const generateMockData = (): InteractionRecord[] => {
   const records: InteractionRecord[] = [];
-  const leadTypes: Array<'PROPERTY_LEAD' | 'SEARCH_LEAD' | 'LOCATION_LEAD'> = ['PROPERTY_LEAD', 'SEARCH_LEAD', 'LOCATION_LEAD'];
+  const leadTypes: Array<'PROPERTY_LEAD' | 'SEARCH_LEAD'> = ['PROPERTY_LEAD', 'SEARCH_LEAD'];
   const operationTypes: Array<'SELL' | 'RENT'> = ['SELL', 'RENT'];
-  const channels: Array<'whatsapp' | 'call' | 'webchat' | 'widget_testing'> = ['whatsapp', 'call', 'webchat', 'widget_testing'];
+  const channels: Array<'whatsapp' | 'webchat' | 'widget_testing'> = ['whatsapp', 'webchat', 'widget_testing'];
   const propertyTypes = ['HOUSE', 'APARTMENT', 'CONDO', 'OFFICE'];
   const appointmentTypes: Array<'VISIT' | 'PHONE_CALL' | 'NOT_SCHEDULED'> = ['VISIT', 'PHONE_CALL', 'NOT_SCHEDULED'];
   const csatResponses = ['1', '2', '3', '4', '5']; // Valores numéricos del 1 al 5

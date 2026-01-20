@@ -1,8 +1,8 @@
 export interface InteractionRecord {
   phonecall_id: number;
   source: string;
-  channel: 'whatsapp' | 'call' | 'webchat' | 'widget_testing';
-  lead_type: 'PROPERTY_LEAD' | 'SEARCH_LEAD' | 'LOCATION_LEAD';
+  channel: 'whatsapp' | 'webchat' | 'widget_testing';
+  lead_type: 'PROPERTY_LEAD' | 'SEARCH_LEAD';
   operation_type: 'SELL' | 'RENT';
   broker_status: string;
   original_property?: {
@@ -43,9 +43,9 @@ export interface InteractionRecord {
 }
 
 export interface InteractionFilters {
-  lead_type?: 'PROPERTY_LEAD' | 'SEARCH_LEAD' | 'LOCATION_LEAD';
+  lead_type?: 'PROPERTY_LEAD' | 'SEARCH_LEAD';
   operation_type?: 'SELL' | 'RENT';
-  channel?: 'whatsapp' | 'call' | 'webchat' | 'widget_testing';
+  channel?: 'whatsapp' | 'webchat' | 'widget_testing';
   source?: string;
   start_date?: string;
   end_date?: string;
@@ -90,7 +90,7 @@ export interface DashboardMetrics {
   averageSessionDuration?: number;
   channelDistribution?: {
     whatsapp: number;
-    call: number;
+    webchat: number;
   };
 }
 
@@ -149,13 +149,13 @@ export interface OtherContactRecord {
   complaint: string | null;
   conversation: ConversationMessage[];
   metadata: Record<string, any>; // Flexible metadata structure
-  channel?: 'whatsapp' | 'call' | 'webchat' | 'widget_testing'; // Optional until backend includes it
+  channel?: 'whatsapp' | 'webchat' | 'widget_testing'; // Optional until backend includes it
   created_at: string;
   tags: string[];
 }
 
 export interface OtherContactFilters {
-  channel?: 'whatsapp' | 'call' | 'webchat' | 'widget_testing';
+  channel?: 'whatsapp' | 'webchat' | 'widget_testing';
   has_complaint?: boolean;
   tags?: string[]; // Filter by tags (OR logic - show contacts with any of these tags)
   start_date?: string;
