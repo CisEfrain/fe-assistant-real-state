@@ -128,7 +128,10 @@ export const ImpactBlock: React.FC<ImpactBlockProps> = ({ dateFilters }) => {
     }).format(value);
   };
 
-  const formatLargeNumber = (value: number) => {
+  const formatLargeNumber = (value: number | undefined | null) => {
+    if (value === undefined || value === null || isNaN(value)) {
+      return '0';
+    }
     if (value >= 1000000) {
       return `${(value / 1000000).toFixed(1)}M`;
     }
@@ -166,13 +169,13 @@ export const ImpactBlock: React.FC<ImpactBlockProps> = ({ dateFilters }) => {
     {
       icon: Heart,
       label: 'Tasa de satisfacción positiva (Encuesta)',
-      value: impact ? `${impact.satisfactionRate.toFixed(0)}%` : '-',
+      value: impact && impact.satisfactionRate !== undefined ? `${impact.satisfactionRate.toFixed(0)}%` : '-',
       color: 'text-pink-600'
     },
     {
       icon: Clock,
       label: '% de interacciones fuera de horario humano',
-      value: impact ? `${impact.offHoursResponseRate.toFixed(0)}%` : '-',
+      value: impact && impact.offHoursResponseRate !== undefined ? `${impact.offHoursResponseRate.toFixed(0)}%` : '-',
       color: 'text-indigo-600'
     },
   ];
@@ -225,7 +228,7 @@ export const ImpactBlock: React.FC<ImpactBlockProps> = ({ dateFilters }) => {
           <div>
             <h3 className="text-lg font-semibold text-white">Mensaje de Valor Estratégico</h3>
             <p className="text-gray-300 mt-1">
-              Santi gestiona el 100% de las interacciones entrantes (WhatsApp y Widget en la web), atiende el {impact ? impact.offHoursResponseRate.toFixed(0) : '--'}% fuera de horario humano, convierte el {impact ? impact.satisfactionRate.toFixed(0) : '--'}% 
+              Santi gestiona el 100% de las interacciones entrantes (WhatsApp y Widget en la web), atiende el {impact && impact.offHoursResponseRate !== undefined ? impact.offHoursResponseRate.toFixed(0) : '--'}% fuera de horario humano, convierte el {impact && impact.satisfactionRate !== undefined ? impact.satisfactionRate.toFixed(0) : '--'}%
               en experiencias positivas y agenda citas por valor de más de {impact ? `${formatLargeNumber(impact.potentialValueWithAppointment / 1000000)}M` : '--'} MXN mensualmente.
             </p>
           </div>
