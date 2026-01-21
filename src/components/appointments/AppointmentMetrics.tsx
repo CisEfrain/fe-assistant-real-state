@@ -153,7 +153,7 @@ export const AppointmentMetrics: React.FC<AppointmentMetricsProps> = ({
             <div className="text-sm text-gray-600 mb-2">Por Tipo de Lead</div>
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium">Property</span>
+                <span className="text-sm font-medium">Propiedad</span>
                 <div className="text-right">
                   <span className="font-bold text-blue-600">{propertyLeadAppointments.length}</span>
                   <span className="text-xs text-gray-500 ml-1">
@@ -162,7 +162,7 @@ export const AppointmentMetrics: React.FC<AppointmentMetricsProps> = ({
                 </div>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium">Search</span>
+                <span className="text-sm font-medium">Búsqueda</span>
                 <div className="text-right">
                   <span className="font-bold text-green-600">{searchLeadAppointments.length}</span>
                   <span className="text-xs text-gray-500 ml-1">

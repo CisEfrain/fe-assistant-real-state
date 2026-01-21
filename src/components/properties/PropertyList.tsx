@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Bed, Bath, Car, Maximize, Eye, MessageCircle, Calendar } from 'lucide-react';
+import { MapPin, Bed, Bath, Car, Maximize, Eye, MessageCircle, Calendar, Home, Package } from 'lucide-react';
 import { Property } from '../../types/properties';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
@@ -10,6 +10,19 @@ interface PropertyListProps {
 }
 
 export const PropertyList: React.FC<PropertyListProps> = ({ properties, onPropertyClick }) => {
+  if (properties.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-12 px-4">
+        <div className="p-4 bg-gray-100 rounded-full mb-4">
+          <Package className="h-8 w-8 text-gray-400" />
+        </div>
+        <h3 className="text-lg font-semibold text-gray-700 mb-2">No hay propiedades disponibles</h3>
+        <p className="text-gray-500 text-center max-w-sm">
+          Intenta ajustar tus filtros o busca por diferentes criterios para encontrar propiedades.
+        </p>
+      </div>
+    );
+  }
   const formatPrice = (amount: number, currency: string) => {
     return new Intl.NumberFormat('es-MX', {
       style: 'currency',

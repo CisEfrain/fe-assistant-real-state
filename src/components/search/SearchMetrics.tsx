@@ -143,19 +143,19 @@ export const SearchMetrics: React.FC<SearchMetricsProps> = ({
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getQualificationColor('hot')}`}>
-                  HOT
+                  Caliente
                 </span>
                 <span className="text-sm font-medium text-gray-900">{qualificationDistribution.hot}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getQualificationColor('moderate')}`}>
-                  MODERATE
+                  Moderado
                 </span>
                 <span className="text-sm font-medium text-gray-900">{qualificationDistribution.moderate}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getQualificationColor('unlikely')}`}>
-                  UNLIKELY
+                  Improbable
                 </span>
                 <span className="text-sm font-medium text-gray-900">{qualificationDistribution.unlikely}</span>
               </div>

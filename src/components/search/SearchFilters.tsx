@@ -122,9 +122,9 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({ filters, onFilterC
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
           >
             <option value="">Todos los niveles</option>
-            <option value="HOT">Hot</option>
-            <option value="MODERATE">Moderate</option>
-            <option value="UNLIKELY">Unlikely</option>
+            <option value="HOT">Caliente</option>
+            <option value="MODERATE">Moderado</option>
+            <option value="UNLIKELY">Improbable</option>
           </select>
         </div>
 

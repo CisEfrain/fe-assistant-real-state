@@ -8,7 +8,8 @@ import {
   Calendar,
   Clock,
   Tag,
-  User
+  User,
+  Inbox
 } from 'lucide-react';
 import { Lead } from '../../types/leads';
 import { format } from 'date-fns';
@@ -52,6 +53,20 @@ export const LeadsList: React.FC<LeadsListProps> = ({ leads, onLeadClick }) => {
     };
     return { badge: badges[status] || badges.NEW, label: labels[status] || status };
   };
+
+  if (leads.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-12 px-4">
+        <div className="p-4 bg-gray-100 rounded-full mb-4">
+          <Inbox className="h-8 w-8 text-gray-400" />
+        </div>
+        <h3 className="text-lg font-semibold text-gray-700 mb-2">No hay leads disponibles</h3>
+        <p className="text-gray-500 text-center max-w-sm">
+          Comienza agregando nuevos leads o selecciona un filtro diferente para ver leads existentes.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-3">

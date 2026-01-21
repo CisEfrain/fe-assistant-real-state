@@ -253,8 +253,8 @@ export const InteractionsTable: React.FC<InteractionsTableProps> = ({ interactio
             >
               <option value="">Todos los canales</option>
               <option value="whatsapp">WhatsApp</option>
-              <option value="webchat">Web Chat</option>
-              <option value="widget_testing">Widget Testing</option>
+              <option value="webchat">Chat Web</option>
+              <option value="widget_testing">Prueba de Widget</option>
             </select>
 
             <select

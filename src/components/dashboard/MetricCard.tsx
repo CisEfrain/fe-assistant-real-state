@@ -10,6 +10,7 @@ interface MetricCardProps {
   color?: 'orange' | 'purple' | 'green' | 'blue' | 'red' | 'yellow';
   size?: 'small' | 'medium' | 'large';
   animated?: boolean;
+  tooltip?: string;
 }
 
 const colorVariants = {
@@ -34,14 +35,18 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   icon: Icon,
   color = 'orange',
   size = 'medium',
-  animated = true
+  animated = true,
+  tooltip
 }) => {
   return (
-    <div className={clsx(
-      'bg-white rounded-xl shadow-lg border border-gray-100 transition-all duration-300',
-      animated && 'hover:shadow-xl hover:scale-105 hover:-translate-y-1',
-      sizeVariants[size]
-    )}>
+    <div
+      className={clsx(
+        'bg-white rounded-xl shadow-lg border border-gray-100 transition-all duration-300',
+        animated && 'hover:shadow-xl hover:scale-105 hover:-translate-y-1',
+        sizeVariants[size]
+      )}
+      title={tooltip}
+    >
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <div className="flex items-center space-x-3 mb-4">
