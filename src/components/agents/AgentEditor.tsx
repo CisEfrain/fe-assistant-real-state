@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Save, Eye, Settings, Brain, List, Database, Code, MessageSquare, HelpCircle, GitBranch, Sparkles, Cog } from 'lucide-react';
+import { ArrowLeft, Save, Eye, Settings, Brain, List, Database, Code, MessageSquare, HelpCircle, GitBranch, Sparkles, Cog, BookOpen, User } from 'lucide-react';
 import { useAgentStore } from '../../stores/useAgentStore';
 import { AgentSummary } from './tabs/AgentSummary';
 import { GuidedAgentConfig } from './GuidedAgentConfig';
@@ -9,9 +9,10 @@ import { AgentTesting } from './tabs/AgentTesting';
 import { AgentAdvanced } from './tabs/AgentAdvanced';
 import { PriorityFlowView } from './tabs/PriorityFlowView';
 import { AgentFactDefinitions } from './tabs/AgentFactDefinitions';
+import { AgentKnowledge } from './tabs/AgentKnowledge';
 import { HelpDialog } from './HelpDialog';
 
-type TabType = 'summary' | 'brain' | 'tasks' | 'facts' | 'flow' | 'testing' | 'advanced';
+type TabType = 'summary' | 'brain' | 'tasks' | 'knowledge' | 'facts' | 'flow' | 'testing' | 'advanced';
 
 const GUIDED_MODE_KEY = 'inmobiliario_agent_mode';
 
@@ -31,12 +32,13 @@ export const AgentEditor: React.FC = () => {
   if (!currentAgent) return null;
 
   const allTabs = [
-    { id: 'summary', label: 'Configuración General', icon: Settings, guidedVisible: true },
-    { id: 'tasks', label: 'Tareas', icon: List, guidedVisible: true },
+    { id: 'summary', label: 'Identidad', icon: User, guidedVisible: true },
+    { id: 'knowledge', label: 'Conocimiento', icon: BookOpen, guidedVisible: true },
+    { id: 'tasks', label: 'Habilidades', icon: List, guidedVisible: true },
+    { id: 'testing', label: 'Probar Conversación', icon: MessageSquare, guidedVisible: true },
     { id: 'facts', label: 'Facts Personalizados', icon: Database, guidedVisible: false },
-    { id: 'flow', label: 'Flujo de Comportamiento', icon: Brain, guidedVisible: false },
-    { id: 'testing', label: 'Probar Asistente', icon: MessageSquare, guidedVisible: true },
-    { id: 'advanced', label: 'Configuración Avanzada', icon: Code, guidedVisible: false }
+    { id: 'flow', label: 'Flujo de Prioridades', icon: Brain, guidedVisible: false },
+    { id: 'advanced', label: 'Configuración Técnica', icon: Code, guidedVisible: false }
   ];
 
   const tabs = isGuidedMode
@@ -52,6 +54,8 @@ export const AgentEditor: React.FC = () => {
 
   const renderTabContent = () => {
     switch (activeTab) {
+      case 'knowledge':
+        return <AgentKnowledge />;
       case 'tasks':
         return <AgentTasks />;
       case 'facts':

@@ -77,18 +77,29 @@ export const AgentsList: React.FC<AgentsListProps> = ({ onStartOnboarding }) => 
     }
   };
 
+  const hasAgent = agents && agents.length > 0;
+
   return (
     <div className="space-y-6">
       {/* Botón Crear Nuevo */}
-      <div className="flex justify-end">
-        <button 
-          onClick={() => setShowTemplateSelector(true)}
-          className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg hover:from-purple-600 hover:to-purple-700 transition-all duration-200 shadow-lg"
-        >
-          <Plus className="h-5 w-5 mr-2" />
-          Crear Nuevo Agente
-        </button>
-      </div>
+      {hasAgent && (
+        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+          <p className="text-sm text-blue-900">
+            <strong>Tu asistente está configurado.</strong> Por ahora, tu plan incluye 1 asistente inmobiliario. ¿Necesitas más? Contáctanos.
+          </p>
+        </div>
+      )}
+      {!hasAgent && (
+        <div className="flex justify-end">
+          <button
+            onClick={() => setShowTemplateSelector(true)}
+            className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg hover:from-blue-600 hover:to-cyan-600 transition-all duration-200 shadow-lg"
+          >
+            <Plus className="h-5 w-5 mr-2" />
+            Crear Asistente
+          </button>
+        </div>
+      )}
 
       {/* Grid de Agentes */}
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -126,18 +137,18 @@ export const AgentsList: React.FC<AgentsListProps> = ({ onStartOnboarding }) => 
               <div className="p-6">
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-purple-600">{agent.tasks.length}</div>
-                    <div className="text-xs text-gray-500">Tareas Total</div>
+                    <div className="text-2xl font-bold text-blue-600">{agent.tasks.length}</div>
+                    <div className="text-xs text-gray-500">Habilidades</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-green-600">{enabledTasks}</div>
-                    <div className="text-xs text-gray-500">Habilitadas</div>
+                    <div className="text-xs text-gray-500">Activas</div>
                   </div>
                 </div>
 
                 {/* Tipos de Tareas */}
                 <div className="mb-4">
-                  <div className="text-sm font-medium text-gray-700 mb-2">Tipos de Tareas:</div>
+                  <div className="text-sm font-medium text-gray-700 mb-2">Puede hacer:</div>
                   <div className="flex flex-wrap gap-2">
                     {taskTypes.slice(0, 4).map((type) => (
                       <div key={type} className="flex items-center space-x-1 px-2 py-1 bg-gray-100 rounded-full text-xs">
@@ -169,27 +180,7 @@ export const AgentsList: React.FC<AgentsListProps> = ({ onStartOnboarding }) => 
                     </span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDuplicateAgent(agent.id, agent.alias);
-                      }}
-                      disabled={duplicatingAgent === agent.id}
-                      className="text-xs text-blue-600 hover:text-blue-800 font-medium disabled:opacity-50"
-                    >
-                      {duplicatingAgent === agent.id ? 'Duplicando...' : 'Duplicar'}
-                    </button>
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteAgent(agent.id, agent.alias);
-                      }}
-                      disabled={deletingAgent === agent.id}
-                      className="text-xs text-red-600 hover:text-red-800 font-medium disabled:opacity-50"
-                    >
-                      {deletingAgent === agent.id ? 'Eliminando...' : 'Eliminar'}
-                    </button>
-                    <button className="text-xs text-purple-600 hover:text-purple-800 font-medium">
+                    <button className="text-xs text-blue-600 hover:text-blue-800 font-medium">
                       Configurar →
                     </button>
                   </div>

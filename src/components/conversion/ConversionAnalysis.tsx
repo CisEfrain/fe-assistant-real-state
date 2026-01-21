@@ -41,10 +41,9 @@ export const ConversionAnalysis: React.FC = () => {
     setFilters(prev => ({ ...prev, [key]: value }));
   };
 
-  // Filtrar solo PROPERTY_LEAD
+  // Filtrar leads con propiedad definida
   const propertyLeads = useMemo(() => {
     return (interactions || []).filter(interaction => {
-      if (interaction.lead_type !== 'PROPERTY_LEAD') return false;
       if (!interaction.original_property) return false;
 
       // Aplicar filtros

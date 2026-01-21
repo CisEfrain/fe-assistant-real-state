@@ -21,7 +21,7 @@ export const ComparisonTable: React.FC<ComparisonTableProps> = ({ metrics }) => 
 
   const rows = [
     {
-      indicator: 'Valor total de propiedades consultadas (PROPERTY_LEAD)',
+      indicator: 'Valor total de propiedades consultadas',
       total: formatCurrency(metrics.economicImpact.totalValue),
       sell: formatCurrency(metrics.sellVsRent.sell.totalValue),
       rent: formatCurrency(metrics.sellVsRent.rent.totalValue),
@@ -88,7 +88,7 @@ export const ComparisonTable: React.FC<ComparisonTableProps> = ({ metrics }) => 
       
       <div className="px-6 py-3 bg-gray-50 border-t border-gray-200">
         <p className="text-xs text-gray-500">
-          Se calcula usando el precio asociado a un lead de propiedad y si el usuario agendó una cita
+          Se calcula usando el precio asociado a cada lead y si el usuario agendó una cita
         </p>
       </div>
     </div>

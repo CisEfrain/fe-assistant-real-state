@@ -164,7 +164,7 @@ export const AgentTasks: React.FC = () => {
           <div className="flex items-center space-x-2">
             <List className="h-5 w-5 text-gray-600" />
             <h3 className="text-lg font-semibold text-gray-900">
-              Tareas del Agente ({filteredTasks.length})
+              Habilidades de tu Asistente ({filteredTasks.length})
             </h3>
           </div>
           

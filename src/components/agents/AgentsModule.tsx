@@ -80,8 +80,8 @@ export const AgentsModule: React.FC = () => {
                   <Bot className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-gray-900">Gestión de Asistentes Conversacionales</h2>
-                  <p className="text-gray-600">Configura y administra agentes IA especializados en el sector inmobiliario</p>
+                  <h2 className="text-xl font-bold text-gray-900">Mi Asistente Inmobiliario</h2>
+                  <p className="text-gray-600">Configura cómo tu asistente virtual atiende a tus clientes</p>
                 </div>
               </div>
 
