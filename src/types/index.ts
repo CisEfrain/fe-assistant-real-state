@@ -2,7 +2,7 @@ export interface InteractionRecord {
   phonecall_id: number;
   source: string;
   channel: 'whatsapp' | 'webchat' | 'widget_testing';
-  lead_type: 'PROPERTY_LEAD' | 'SEARCH_LEAD';
+  lead_type: 'PROPERTY_LEAD';
   operation_type: 'SELL' | 'RENT';
   broker_status: string;
   original_property?: {
@@ -43,7 +43,6 @@ export interface InteractionRecord {
 }
 
 export interface InteractionFilters {
-  lead_type?: 'PROPERTY_LEAD' | 'SEARCH_LEAD';
   operation_type?: 'SELL' | 'RENT';
   channel?: 'whatsapp' | 'webchat' | 'widget_testing';
   source?: string;

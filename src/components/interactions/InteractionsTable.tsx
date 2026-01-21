@@ -258,19 +258,6 @@ export const InteractionsTable: React.FC<InteractionsTableProps> = ({ interactio
             </select>
 
             <select
-              value={filters.leadType}
-              onChange={(e) => {
-                setFilters({...filters, leadType: e.target.value});
-                setCurrentPage(1);
-              }}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
-            >
-              <option value="">Todos los tipos</option>
-              <option value="PROPERTY_LEAD">Lead de Propiedad</option>
-              <option value="SEARCH_LEAD">Lead de Búsqueda</option>
-            </select>
-
-            <select
               value={filters.operationType}
               onChange={(e) => {
                 setFilters({...filters, operationType: e.target.value});

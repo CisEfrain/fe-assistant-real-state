@@ -64,25 +64,6 @@ export const QualityFilters: React.FC<QualityFiltersProps> = ({ filters, onFilte
           </select>
         </div>
 
-        {/* Tipo de Lead */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            <div className="flex items-center space-x-1">
-              <Users className="h-4 w-4" />
-              <span>Tipo de Lead</span>
-            </div>
-          </label>
-          <select
-            value={filters.leadType}
-            onChange={(e) => onFilterChange('leadType', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-          >
-            <option value="">Todos</option>
-            <option value="PROPERTY_LEAD">Lead de propiedad</option>
-            <option value="SEARCH_LEAD">Lead de búsqueda</option>
-          </select>
-        </div>
-
         {/* Nivel CSAT */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">

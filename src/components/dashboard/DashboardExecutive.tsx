@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { 
-  Phone, 
-  Calendar, 
-  CheckCircle, 
-  MessageSquare, 
-  Users, 
+import {
+  Phone,
+  Calendar,
+  CheckCircle,
+  MessageSquare,
+  Users,
   TrendingUp,
   Eye,
   UserCheck,
   Clock,
   BarChart3,
   RefreshCw,
-  Star,
-  Play
+  Star
 } from 'lucide-react';
 import { useInteractionStore } from '../../stores/useInteractionStore';
 import { MetricCard } from './MetricCard';
@@ -35,8 +34,6 @@ export const DashboardExecutive: React.FC = () => {
   const [metrics, setMetrics] = useState<ReturnType<typeof getDashboardMetrics> | null>(null);
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [processMessage, setProcessMessage] = useState<string | null>(null);
 
   // Crear safeMetrics con valores por defecto
   const safeMetrics = metrics && {
@@ -102,41 +99,6 @@ export const DashboardExecutive: React.FC = () => {
 
   const handleRefresh = async () => {
     await loadData();
-  };
-
-  const n8nExecuteUrl = env.N8N_ANALYTICS_EXECUTE_URL || 'https://n8n-dev.iadmexico.mx/webhook/prod/contact-center/analitycs-execute';
-
-  const handleProcessLeads = async () => {
-    setIsProcessing(true);
-    setProcessMessage(null);
-    
-    try {
-      const response = await fetch(n8nExecuteUrl, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.ok) {
-        setProcessMessage('✅ Se ha iniciado el procesamiento de leads');
-        // Refresh data after processing
-        setTimeout(() => {
-          handleRefresh();
-        }, 2000);
-      } else {
-        setProcessMessage('❌ Error al procesar leads');
-      }
-    } catch (error) {
-      console.error('Error processing leads:', error);
-      setProcessMessage('❌ Error de conexión al procesar leads');
-    } finally {
-      setIsProcessing(false);
-      // Clear message after 5 seconds
-      setTimeout(() => {
-        setProcessMessage(null);
-      }, 5000);
-    }
   };
 
   // Efecto para actualizar cuando cambian los filtros de fecha
@@ -246,28 +208,7 @@ export const DashboardExecutive: React.FC = () => {
                   {isRefreshing ? 'Actualizando...' : 'Actualizar'}
                 </button>
                 
-                <button
-                  onClick={handleProcessLeads}
-                  disabled={isProcessing}
-                  className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-200 disabled:opacity-50"
-                  title="Procesar leads manualmente"
-                >
-                  {isProcessing ? (
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                  ) : (
-                    <Play className="h-4 w-4 mr-2" />
-                  )}
-                  {isProcessing ? 'Procesando...' : 'Procesar Leads'}
-                </button>
               </div>
-              
-              {processMessage && (
-                <div className={`text-sm font-medium ${
-                  processMessage.includes('✅') ? 'text-green-600' : 'text-red-600'
-                }`}>
-                  {processMessage}
-                </div>
-              )}
             </div>
           </div>
         </div>

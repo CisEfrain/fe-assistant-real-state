@@ -9,7 +9,7 @@ export type LeadStatus =
   | 'LOST';
 
 export type LeadSource = 'whatsapp' | 'webchat' | 'widget_testing';
-export type LeadType = 'PROPERTY_LEAD' | 'SEARCH_LEAD';
+export type LeadType = 'PROPERTY_LEAD';
 export type OperationType = 'SELL' | 'RENT';
 
 export interface LeadContact {
@@ -86,7 +86,6 @@ export interface Lead {
 
 export interface LeadFilters {
   status?: LeadStatus | LeadStatus[];
-  leadType?: LeadType;
   operationType?: OperationType;
   source?: LeadSource;
   assignedTo?: string;

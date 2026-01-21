@@ -73,16 +73,6 @@ export const LeadFiltersPanel: React.FC<LeadFiltersPanelProps> = ({
           </select>
 
           <select
-            value={filters.leadType || ''}
-            onChange={(e) => updateFilter('leadType', e.target.value || undefined)}
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-          >
-            <option value="">Todos los tipos</option>
-            <option value="PROPERTY_LEAD">Lead de Propiedad</option>
-            <option value="SEARCH_LEAD">Lead de Búsqueda</option>
-          </select>
-
-          <select
             value={filters.operationType || ''}
             onChange={(e) => updateFilter('operationType', e.target.value || undefined)}
             className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"

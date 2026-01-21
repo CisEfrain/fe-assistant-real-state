@@ -2,7 +2,6 @@ import { Layout } from './components/Layout';
 import { DashboardExecutive } from './components/dashboard/DashboardExecutive';
 import { InteractionsDetail } from './components/interactions/InteractionsDetail';
 import { ConversionAnalysis } from './components/conversion/ConversionAnalysis';
-import { SearchAnalysis } from './components/search/SearchAnalysis';
 import { AppointmentsModule } from './components/appointments/AppointmentsModule';
 import { QualityModule } from './components/quality/QualityModule';
 import { AgentsModule } from './components/agents/AgentsModule';
@@ -33,8 +32,6 @@ function App() {
         return <InteractionsDetail />;
       case 'conversion':
         return <ConversionAnalysis />;
-      case 'search':
-        return <SearchAnalysis />;
       case 'appointments':
         return <AppointmentsModule />;
       case 'quality':

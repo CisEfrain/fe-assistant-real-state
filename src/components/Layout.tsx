@@ -20,7 +20,6 @@ const modules = [
   { id: 'leads', name: 'Leads (CRM)', icon: Users, color: 'text-green-500' },
   { id: 'interactions', name: 'Conversaciones', icon: MessageCircle, color: 'text-purple-500' },
   { id: 'conversion', name: 'Análisis de Conversión', icon: TrendingUp, color: 'text-green-500' },
-  { id: 'search', name: 'Leads de Búsqueda', icon: Search, color: 'text-blue-500' },
   { id: 'appointments', name: 'Citas Agendadas', icon: Calendar, color: 'text-indigo-500' },
   { id: 'quality', name: 'Calidad Conversacional', icon: MessageSquare, color: 'text-pink-500' },
   { id: 'agents', name: 'Asistentes', icon: Bot, color: 'text-purple-600' },
@@ -79,7 +78,7 @@ export const Layout = ({ children }: LayoutProps) => {
               {modules.map((module) => {
                 const Icon = module.icon;
                 const isActive = currentModule === module.id;
-                const isImplemented = module.id === 'dashboard' || module.id === 'properties' || module.id === 'leads' || module.id === 'interactions' || module.id === 'conversion' || module.id === 'search' || module.id === 'appointments' || module.id === 'quality' || module.id === 'agents';
+                const isImplemented = module.id === 'dashboard' || module.id === 'properties' || module.id === 'leads' || module.id === 'interactions' || module.id === 'conversion' || module.id === 'appointments' || module.id === 'quality' || module.id === 'agents';
                 
                 return (
                   <button

@@ -2,13 +2,7 @@
 
 export type AnalyticsType = 'DISABLED' | 'IAD_LEADS' | 'PON';
 
-export type AgentType =
-  | 'lead-capture-specialist'
-  | 'customer-support-agent'
-  | 'property-advisor'
-  | 'appointment-coordinator'
-  | 'complaint-handler'
-  | 'faq-assistant';
+export type AgentType = 'conversational-agent';
 export type AgentStatus = 'draft' | 'active' | 'deprecated';
 export type AgentChannel = 'whatsapp' | 'call' | 'webchat' | 'widget_testing';
 export enum TaskType {
@@ -340,12 +334,7 @@ export interface Agent {
 
 // Tipos de agentes disponibles
 export const AGENT_TYPES = {
-  'lead-capture-specialist': 'Especialista en Captura de Leads',
-  'customer-support-agent': 'Agente de Soporte al Cliente',
-  'property-advisor': 'Asesor de Propiedades',
-  'appointment-coordinator': 'Coordinador de Citas',
-  'complaint-handler': 'Gestor de Reclamos',
-  'faq-assistant': 'Asistente de Preguntas Frecuentes'
+  'conversational-agent': 'Agente Conversacional'
 } as const;
 
 // Tipos de tareas disponibles
