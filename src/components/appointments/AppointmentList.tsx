@@ -1,18 +1,31 @@
 import React from 'react';
-import { Eye, Phone, Clock, User, Home, DollarSign } from 'lucide-react';
+import { Eye, Phone, Clock, User, Home, DollarSign, ExternalLink } from 'lucide-react';
 import { InteractionRecord } from '../../types';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { useInteractionStore } from '../../stores/useInteractionStore';
+import { extractContactFromMetadata, findLeadByContact } from '../../utils/leadMatching';
 
 interface AppointmentListProps {
   appointments: InteractionRecord[];
   selectedDate?: Date;
+  leads?: any[];
 }
 
 export const AppointmentList: React.FC<AppointmentListProps> = ({
   appointments,
-  selectedDate
+  selectedDate,
+  leads = []
 }) => {
+  const { navigateToLead } = useInteractionStore();
+
+  const handleViewLead = (appointment: InteractionRecord) => {
+    const contact = extractContactFromMetadata(appointment.metadata);
+    const lead = findLeadByContact(leads, contact.phone, contact.email);
+    if (lead && lead.id) {
+      navigateToLead(lead.id);
+    }
+  };
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('es-MX', {
       style: 'currency',
@@ -107,31 +120,45 @@ export const AppointmentList: React.FC<AppointmentListProps> = ({
           </div>
         ) : (
           <div className="divide-y divide-gray-200">
-            {sortedAppointments.map((appointment) => (
-              <div
-                key={appointment.phonecall_id}
-                className={`p-4 border-l-4 ${getAppointmentColor(appointment.appointment?.type || '')}`}
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center space-x-3">
-                    {getAppointmentIcon(appointment.appointment?.type || '')}
-                    <div>
-                      <h4 className="font-semibold text-gray-900">
-                        {appointment.appointment?.title || `Cita #${appointment.phonecall_id}`}
-                      </h4>
-                      <p className="text-sm text-gray-600">
-                        {appointment.appointment?.date && 
-                          format(new Date(appointment.appointment.date), 'HH:mm', { locale: es })
-                        }
-                      </p>
+            {sortedAppointments.map((appointment) => {
+              const contact = extractContactFromMetadata(appointment.metadata);
+              const leadInCRM = findLeadByContact(leads, contact.phone, contact.email);
+
+              return (
+                <div
+                  key={appointment.phonecall_id}
+                  className={`p-4 border-l-4 ${getAppointmentColor(appointment.appointment?.type || '')}`}
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center space-x-3">
+                      {getAppointmentIcon(appointment.appointment?.type || '')}
+                      <div>
+                        <h4 className="font-semibold text-gray-900">
+                          {appointment.appointment?.title || `Cita #${appointment.phonecall_id}`}
+                        </h4>
+                        <p className="text-sm text-gray-600">
+                          {appointment.appointment?.date &&
+                            format(new Date(appointment.appointment.date), 'HH:mm', { locale: es })
+                          }
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-right flex flex-col gap-2">
+                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getLeadTypeColor(appointment.lead_type)}`}>
+                        {getLeadTypeLabel(appointment.lead_type)}
+                      </span>
+                      {leadInCRM && (
+                        <button
+                          onClick={() => handleViewLead(appointment)}
+                          className="inline-flex items-center px-2 py-1 bg-green-100 text-green-700 hover:bg-green-200 rounded text-xs font-medium transition-colors"
+                          title="Ver lead en CRM"
+                        >
+                          <ExternalLink className="h-3 w-3 mr-1" />
+                          Ver Lead
+                        </button>
+                      )}
                     </div>
                   </div>
-                  <div className="text-right">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getLeadTypeColor(appointment.lead_type)}`}>
-                      {getLeadTypeLabel(appointment.lead_type)}
-                    </span>
-                  </div>
-                </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                   <div className="flex items-center space-x-2">
@@ -196,7 +223,8 @@ export const AppointmentList: React.FC<AppointmentListProps> = ({
                   </div>
                 )}
               </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

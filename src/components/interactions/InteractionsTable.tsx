@@ -1,11 +1,11 @@
-import React, { useState, useMemo } from 'react';
-import { 
-  Phone, 
+import React, { useState, useMemo, useEffect } from 'react';
+import {
+  Phone,
   MessageCircle,
   MessageSquare,
   Settings,
-  User, 
-  Eye, 
+  User,
+  Eye,
   Search,
   ChevronLeft,
   ChevronRight,
@@ -15,30 +15,33 @@ import {
   Clock,
   DollarSign,
   Star,
-  Download
+  Download,
+  ExternalLink
 } from 'lucide-react';
 import { InteractionRecord } from '../../types';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { interactionAPI } from '../../services/api';
+import { useInteractionStore } from '../../stores/useInteractionStore';
+import { extractContactFromMetadata, findLeadByContact } from '../../utils/leadMatching';
 
 interface InteractionsTableProps {
   interactions: InteractionRecord[];
   onInteractionSelect: (interaction: InteractionRecord) => void;
+  leads?: any[];
 }
 
-// Helper function to extract contact info from metadata
-const extractContactInfo = (metadata: Record<string, unknown> | undefined) => {
-  if (!metadata) return { name: 'Sin nombre', phone: 'Sin teléfono', email: 'Sin email' };
-  
-  const name = String(metadata?.name || metadata?.nombre || 'Sin nombre');
-  const phone = String(metadata?.phone || metadata?.telefono || metadata?.phone_number || 'Sin teléfono');
-  const email = String(metadata?.email || 'Sin email');
-  
-  return { name, phone, email };
-};
+export const InteractionsTable: React.FC<InteractionsTableProps> = ({ interactions, onInteractionSelect, leads = [] }) => {
+  const { navigateToLead } = useInteractionStore();
 
-export const InteractionsTable: React.FC<InteractionsTableProps> = ({ interactions, onInteractionSelect }) => {
+  const handleViewInCRM = (interaction: InteractionRecord) => {
+    const contact = extractContactFromMetadata(interaction.metadata);
+    const lead = findLeadByContact(leads, contact.phone, contact.email);
+
+    if (lead && lead.id) {
+      navigateToLead(lead.id);
+    }
+  };
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(25);
   const [sortField, setSortField] = useState<keyof InteractionRecord>('created_at');
@@ -56,13 +59,31 @@ export const InteractionsTable: React.FC<InteractionsTableProps> = ({ interactio
     hasEscalation: ''
   });
 
+  useEffect(() => {
+    const savedFilter = localStorage.getItem('interactions_filter');
+    if (savedFilter) {
+      try {
+        const { phone, email } = JSON.parse(savedFilter);
+        if (phone || email) {
+          setSearchTerm(phone || email || '');
+          localStorage.removeItem('interactions_filter');
+        }
+      } catch (error) {
+        console.error('Error parsing interaction filter:', error);
+        localStorage.removeItem('interactions_filter');
+      }
+    }
+  }, []);
+
   // Filtrar y ordenar datos
   const filteredAndSortedInteractions = useMemo(() => {
     const filtered = (interactions || []).filter(interaction => {
-      const { name, phone } = extractContactInfo(interaction.metadata);
-      const matchesSearch = searchTerm === '' || 
-        name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        phone.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      const { name, phone } = extractContactFromMetadata(interaction.metadata);
+      const contactName = name || 'Sin nombre';
+      const contactPhone = phone || 'Sin teléfono';
+      const matchesSearch = searchTerm === '' ||
+        contactName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        contactPhone.toLowerCase().includes(searchTerm.toLowerCase()) ||
         interaction.source.toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchesFilters = 
@@ -358,28 +379,35 @@ export const InteractionsTable: React.FC<InteractionsTableProps> = ({ interactio
                   Valor
                 </th>
                 <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  CRM
+                </th>
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Acciones
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {paginatedInteractions.map((interaction) => {
-                const { name, phone } = extractContactInfo(interaction.metadata);
+                const contact = extractContactFromMetadata(interaction.metadata);
+                const leadInCRM = findLeadByContact(leads, contact.phone, contact.email);
+                const displayName = contact.name || 'Sin nombre';
+                const displayPhone = contact.phone || 'Sin teléfono';
+
                 return (
                   <tr key={interaction.phonecall_id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center space-x-2">
                         <User className="h-4 w-4 text-gray-400" />
-                        <span className={`text-sm ${name === 'Sin nombre' ? 'text-gray-400 italic' : 'text-gray-900'}`}>
-                          {name}
+                        <span className={`text-sm ${!contact.name ? 'text-gray-400 italic' : 'text-gray-900'}`}>
+                          {displayName}
                         </span>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center space-x-2">
                         <Phone className="h-4 w-4 text-gray-400" />
-                        <span className={`text-sm font-mono ${phone === 'Sin teléfono' ? 'text-gray-400 italic' : 'text-gray-900'}`}>
-                          {phone}
+                        <span className={`text-sm font-mono ${!contact.phone ? 'text-gray-400 italic' : 'text-gray-900'}`}>
+                          {displayPhone}
                         </span>
                       </div>
                     </td>
@@ -440,15 +468,29 @@ export const InteractionsTable: React.FC<InteractionsTableProps> = ({ interactio
                       <span className="text-gray-400">-</span>
                     )}
                   </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-center">
+                  <td className="px-6 py-4 whitespace-nowrap text-center">
+                    {leadInCRM ? (
                       <button
-                        onClick={() => onInteractionSelect(interaction)}
-                        className="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-orange-700 bg-orange-100 hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors"
+                        onClick={() => handleViewInCRM(interaction)}
+                        className="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-green-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
+                        title="Ver lead en CRM"
                       >
-                        <Eye className="h-4 w-4 mr-1" />
-                        Ver
+                        <ExternalLink className="h-4 w-4 mr-1" />
+                        Ver en CRM
                       </button>
-                    </td>
+                    ) : (
+                      <span className="text-xs text-gray-400">No en CRM</span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-center">
+                    <button
+                      onClick={() => onInteractionSelect(interaction)}
+                      className="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-orange-700 bg-orange-100 hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors"
+                    >
+                      <Eye className="h-4 w-4 mr-1" />
+                      Ver
+                    </button>
+                  </td>
                   </tr>
                 );
               })}

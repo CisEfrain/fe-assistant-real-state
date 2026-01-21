@@ -1,21 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Phone, Filter, Download, BarChart3 } from 'lucide-react';
 import { useInteractionStore } from '../../stores/useInteractionStore';
 import { InteractionsTable } from './InteractionsTable';
 import { InteractionDetailModal } from './InteractionDetailModal';
 import { InteractionRecord } from '../../types';
+import { aggregateLeadsFromInteractions } from '../../utils/leadMatching';
 
 export const InteractionsDetail: React.FC = () => {
-  const { 
+  const {
     interactions,
     dateFilters,
     setDateFilters,
     setPeriodDays,
-    loading, 
+    loading,
     fetchInteractions
   } = useInteractionStore();
   const [selectedInteraction, setSelectedInteraction] = useState<InteractionRecord | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const leads = useMemo(() => {
+    return aggregateLeadsFromInteractions(interactions || []);
+  }, [interactions]);
 
   // Cargar datos con filtros API (solo por fechas)
 
@@ -185,7 +190,7 @@ export const InteractionsDetail: React.FC = () => {
       </div>
 
       {/* Tabla de Interacciones */}
-      <InteractionsTable interactions={safeInteractions} onInteractionSelect={handleInteractionSelect} />
+      <InteractionsTable interactions={safeInteractions} onInteractionSelect={handleInteractionSelect} leads={leads} />
 
       {/* Modal de Detalle */}
       {selectedInteraction && (

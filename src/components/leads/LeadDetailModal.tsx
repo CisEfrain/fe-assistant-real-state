@@ -14,11 +14,13 @@ import {
   Plus,
   MessageCircle,
   Star,
-  AlertCircle
+  AlertCircle,
+  ExternalLink
 } from 'lucide-react';
 import { Lead } from '../../types/leads';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { useInteractionStore } from '../../stores/useInteractionStore';
 
 interface LeadDetailModalProps {
   lead: Lead;
@@ -27,6 +29,11 @@ interface LeadDetailModalProps {
 
 export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({ lead, onClose }) => {
   const [activeTab, setActiveTab] = useState<'details' | 'activities' | 'notes'>('details');
+  const { navigateToConversations } = useInteractionStore();
+
+  const handleViewConversations = () => {
+    navigateToConversations(lead.contact.phone, lead.contact.email);
+  };
 
   const formatCurrency = (amount: number, currency: string) => {
     return new Intl.NumberFormat('es-MX', {
@@ -79,6 +86,14 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({ lead, onClose 
             ))}
           </div>
           <div className="flex items-center gap-2">
+            <button
+              onClick={handleViewConversations}
+              className="inline-flex items-center px-3 py-2 bg-purple-100 text-purple-700 hover:bg-purple-200 rounded-lg transition-colors text-sm font-medium"
+              title="Ver todas las conversaciones de este lead"
+            >
+              <ExternalLink className="h-4 w-4 mr-2" />
+              Ver Conversaciones
+            </button>
             <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors" title="Editar">
               <Edit className="h-5 w-5 text-gray-600" />
             </button>

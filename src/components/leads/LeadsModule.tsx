@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   Users,
   Plus,
@@ -13,6 +13,7 @@ import { LeadsList } from './LeadsList';
 import { LeadFiltersPanel } from './LeadFiltersPanel';
 import { LeadStats } from './LeadStats';
 import { LeadDetailModal } from './LeadDetailModal';
+import { useInteractionStore } from '../../stores/useInteractionStore';
 
 const mockLeads: Lead[] = [
   {
@@ -99,6 +100,18 @@ export const LeadsModule: React.FC = () => {
     sortBy: 'createdAt',
     sortOrder: 'DESC'
   });
+
+  const { currentLeadId, setCurrentLeadId } = useInteractionStore();
+
+  useEffect(() => {
+    if (currentLeadId) {
+      const lead = mockLeads.find(l => l.id === currentLeadId);
+      if (lead) {
+        setSelectedLead(lead);
+      }
+      setCurrentLeadId(null);
+    }
+  }, [currentLeadId, setCurrentLeadId]);
 
   const filteredLeads = useMemo(() => {
     let filtered = [...mockLeads];

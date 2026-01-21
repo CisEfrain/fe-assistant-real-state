@@ -25,20 +25,31 @@ interface InteractionStore {
     start_date: string;
     end_date: string;
   };
-  
+
+  // Cross-module navigation state
+  currentLeadId: string | null;
+  currentPropertyId: string | null;
+
   // Other Contacts State
   otherContacts: OtherContactRecord[];
   otherContactsTotal: number;
   otherContactsPage: number;
   otherContactsLimit: number;
   otherContactsTotalPages: number;
-  
+
   // Actions
   setCurrentModule: (module: string) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
   setDateFilters: (filters: { start_date: string; end_date: string }) => void;
   setPeriodDays: (days: number) => void;
+
+  // Cross-module navigation actions
+  setCurrentLeadId: (id: string | null) => void;
+  setCurrentPropertyId: (id: string | null) => void;
+  navigateToLead: (leadId: string) => void;
+  navigateToProperty: (propertyId: string) => void;
+  navigateToConversations: (phone?: string, email?: string) => void;
   
   // API Actions
   fetchInteractions: (filters?: InteractionFilters) => Promise<void>;
@@ -68,26 +79,51 @@ export const useInteractionStore = create<InteractionStore>((set, get) => ({
     start_date: getDaysAgo(30),
     end_date: getToday()
   },
-  
+
+  // Cross-module navigation initial state
+  currentLeadId: null,
+  currentPropertyId: null,
+
   // Other Contacts initial state
   otherContacts: [],
   otherContactsTotal: 0,
   otherContactsPage: 1,
   otherContactsLimit: 20,
   otherContactsTotalPages: 0,
-  
+
   setCurrentModule: (module: string) => set({ currentModule: module }),
-  
+
   setLoading: (loading: boolean) => set({ loading }),
-  
+
   setError: (error: string | null) => set({ error }),
-  
+
   setDateFilters: (filters) => set({ dateFilters: filters }),
-  
+
   setPeriodDays: (days: number) => {
     const end_date = getToday();
     const start_date = getDaysAgo(days);
     set({ dateFilters: { start_date, end_date } });
+  },
+
+  // Cross-module navigation actions
+  setCurrentLeadId: (id: string | null) => set({ currentLeadId: id }),
+
+  setCurrentPropertyId: (id: string | null) => set({ currentPropertyId: id }),
+
+  navigateToLead: (leadId: string) => {
+    set({ currentLeadId: leadId, currentModule: 'leads' });
+  },
+
+  navigateToProperty: (propertyId: string) => {
+    set({ currentPropertyId: propertyId, currentModule: 'properties' });
+  },
+
+  navigateToConversations: (phone?: string, email?: string) => {
+    set({ currentModule: 'interactions' });
+    // Store filter criteria in localStorage for InteractionsTable to pick up
+    if (phone || email) {
+      localStorage.setItem('interactions_filter', JSON.stringify({ phone, email }));
+    }
   },
   
   // API Actions

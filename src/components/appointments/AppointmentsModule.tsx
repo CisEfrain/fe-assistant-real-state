@@ -5,10 +5,11 @@ import { AppointmentCalendar } from './AppointmentCalendar';
 import { AppointmentList } from './AppointmentList';
 import { AppointmentMetrics } from './AppointmentMetrics';
 import { AppointmentFilters } from './AppointmentFilters';
+import { aggregateLeadsFromInteractions } from '../../utils/leadMatching';
 
 export const AppointmentsModule: React.FC = () => {
-  const { 
-    interactions, 
+  const {
+    interactions,
     loading,
     fetchInteractions,
     dateFilters,
@@ -16,6 +17,10 @@ export const AppointmentsModule: React.FC = () => {
     setPeriodDays
   } = useInteractionStore();
   const [selectedDate, setSelectedDate] = useState<Date>();
+
+  const leads = useMemo(() => {
+    return aggregateLeadsFromInteractions(interactions || []);
+  }, [interactions]);
   
   const [filters, setFilters] = useState({
     channel: '',
@@ -170,6 +175,7 @@ export const AppointmentsModule: React.FC = () => {
         <AppointmentList
           appointments={appointmentsWithFilters}
           selectedDate={selectedDate}
+          leads={leads}
         />
       </div>
 
